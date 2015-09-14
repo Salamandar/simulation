@@ -1,5 +1,3 @@
-#include <stdio.h>
-#include <pthread.h>
 
 #include "init_gtk.h"
 #include "asservissement.h"
@@ -12,7 +10,6 @@ static unsigned short rxBufferFin=0;
 int cmd_quit_received=0;
 
 extern "C" {
-    void init_hardware();
     int arret();
     int UART_getc(unsigned char *c);
     void UART_send_message(char *msg, unsigned int nb_char);
@@ -82,19 +79,3 @@ void UART_send_message(char *msg, unsigned int nb_char)
     puts(msg);
 }
 
-
-void init_hardware()
-{
-
-    pthread_t thread_RX;
-    int ret;
-
-    ret = pthread_create (&thread_RX, NULL, fake_RX, NULL);
-    if (ret != 0)
-        fprintf(stderr, "erreur %d\n", ret);
-
-    #if USE_SDL
-    init_simulation();
-
-    #endif
-}

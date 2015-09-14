@@ -9,6 +9,7 @@
 Simulation* m_Simulation = 0;
 
 void* start_simulation_thread(void*) {
+    std::cout << "auie" << std::endl;
     m_Simulation->start();
     exit(0);
 }
@@ -32,7 +33,7 @@ int Simulation::init() {
 
     Glib::RefPtr<Gtk::Builder> refBuilder = Gtk::Builder::create();
     try {
-    refBuilder->add_from_file("../hardware/PC/Window.glade");
+    refBuilder->add_from_file("Window.glade");
 
     } catch(const Glib::FileError& ex) {
         std::cerr << "FileError: "   <<ex.what() << std::endl;

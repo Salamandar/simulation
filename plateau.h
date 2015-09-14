@@ -16,7 +16,7 @@
 #define ROBOT_H 40
 #define ROBOT_L 40
 
-#define IMAGE_PLATEAU "../../hardware/PC/simulation_gtk/plateau.png"
+#define IMAGE_PLATEAU "plateau.png"
 
 
 class Plateau : public Gtk::DrawingArea {

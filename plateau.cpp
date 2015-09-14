@@ -22,7 +22,7 @@ Plateau::Plateau(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& refG
         PLATEAU_H/PLATEAU_SCALE);
 
     try {
-        background = Gdk::Pixbuf::create_from_file("../hardware/PC/plateau.png");
+        background = Gdk::Pixbuf::create_from_file(IMAGE_PLATEAU);
 
     } catch(const Glib::FileError& ex) {
     std::cerr << "FileError: " << ex.what() << std::endl;

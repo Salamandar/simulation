@@ -34,6 +34,7 @@ hardware-lib: $(BUILD_DIR)/lib$(ARCH).a
 $(BUILD_DIR)/lib$(ARCH).a: $(OBJ) $(OBJ_S)
 
 simulation: $(OBJ)
+	@make -C $(ASSER_DIR) asser_robot
 	@echo "	++	$(PROJECT)|$(notdir $@)"
 	@$(++) $(CFLAGS) -o $@ $^ $(LDFLAGS)
 

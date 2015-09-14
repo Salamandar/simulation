@@ -1,24 +1,11 @@
 #include <gtkmm.h>
 #include "plateau.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+void set_trajectoire_xy_absolu(int x, int y);
 
 int init_simulation();
 
-void set_trajectoire_xy_absolu(int x, int y);
-
 void bouge_robot_sdl(int x, int y, double alpha);
-
-void dessine_obstacle_rond(int cx, int cy, int r);
-void dessine_obstacle_ligne(int x1, int y1, int x2, int y2);
-
-void dessine_point_passage_carto(int x, int y, int type);
-
-#ifdef __cplusplus
-}
-#endif
 
 int init_gtk();
 
