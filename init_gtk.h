@@ -1,4 +1,5 @@
 #include <gtkmm.h>
+#include <gtksourceviewmm.h>
 #include "plateau.h"
 
 void set_trajectoire_xy_absolu(int x, int y);
@@ -24,6 +25,9 @@ public:
 
     Gtk::Window* m_Window;
     Plateau* plateau;
+
+    Gsv::View *UART_view;
+    Glib::RefPtr<Gtk::TextBuffer> UART_tbuffer;
 
 protected:
 

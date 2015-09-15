@@ -9,6 +9,7 @@
       <object class="GtkGrid" id="grid1">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
+        <property name="orientation">vertical</property>
         <child>
           <object class="GtkFrame" id="UART_frame">
             <property name="visible">True</property>
@@ -16,25 +17,27 @@
             <property name="label_xalign">0</property>
             <property name="shadow_type">none</property>
             <child>
-              <object class="GtkAlignment" id="alignment1">
+              <object class="GtkScrolledWindow" id="scrolledwindow1">
+                <property name="width_request">400</property>
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
+                <property name="can_focus">True</property>
+                <property name="shadow_type">out</property>
                 <child>
-                  <object class="GtkSourceView" id="UART_text">
-                    <property name="width_request">400</property>
+                  <object class="GtkSourceView" id="UART_view">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="hexpand">True</property>
                     <property name="hscroll_policy">natural</property>
                     <property name="vscroll_policy">natural</property>
                     <property name="pixels_below_lines">1</property>
+                    <property name="editable">False</property>
                     <property name="left_margin">2</property>
                     <property name="right_margin">2</property>
                     <property name="monospace">True</property>
                     <property name="show_line_numbers">True</property>
                     <property name="tab_width">4</property>
+                    <property name="highlight_current_line">True</property>
                     <property name="indent_on_tab">False</property>
-                    <property name="draw_spaces">GTK_SOURCE_DRAW_SPACES_SPACE | GTK_SOURCE_DRAW_SPACES_TAB | GTK_SOURCE_DRAW_SPACES_NEWLINE | GTK_SOURCE_DRAW_SPACES_NBSP | GTK_SOURCE_DRAW_SPACES_LEADING | GTK_SOURCE_DRAW_SPACES_TEXT | GTK_SOURCE_DRAW_SPACES_TRAILING</property>
                     <property name="background_pattern">grid</property>
                   </object>
                 </child>
@@ -45,13 +48,14 @@
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">UART</property>
+                <property name="xalign">1</property>
+                <property name="yalign">0</property>
               </object>
             </child>
           </object>
           <packing>
             <property name="left_attach">1</property>
             <property name="top_attach">0</property>
-            <property name="width">2</property>
           </packing>
         </child>
         <child>
@@ -72,12 +76,6 @@
             <property name="left_attach">0</property>
             <property name="top_attach">0</property>
           </packing>
-        </child>
-        <child>
-          <placeholder/>
-        </child>
-        <child>
-          <placeholder/>
         </child>
         <child>
           <placeholder/>

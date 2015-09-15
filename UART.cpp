@@ -9,13 +9,6 @@ static unsigned short rxBufferFin=0;
 
 int cmd_quit_received=0;
 
-extern "C" {
-    int arret();
-    int UART_getc(unsigned char *c);
-    void UART_send_message(char *msg, unsigned int nb_char);
-}
-
-
 int arret()
 {
     return cmd_quit_received;
@@ -64,6 +57,13 @@ int UART_getc(unsigned char *c)
 }
 
 
+void init_UART_thread() {
+    pthread_t thread_RX;
+
+    int ret = pthread_create(&thread_RX, NULL, fake_RX, NULL);
+    if (ret != 0)
+        fprintf(stderr, "erreur %d\n", ret);
+}
 /*
 void UART_send_message(char* message) {
     char *actuel = message;

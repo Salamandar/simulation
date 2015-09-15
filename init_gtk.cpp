@@ -6,29 +6,10 @@
 
 #define POINT_SIZE 40
 
-Simulation* m_Simulation = 0;
-
-void* start_simulation_thread(void*) {
-    std::cout << "auie" << std::endl;
-    m_Simulation->start();
-    exit(0);
-}
-
-int init_simulation() {
-    m_Simulation = new Simulation();
-    m_Simulation->init();
-
-    pthread_t uiThread;
-    pthread_create(&uiThread, NULL, &start_simulation_thread, NULL);
-
-    return 0;
-}
-
-
-
 int Simulation::init() {
     // Obtain gtk's global lock
     m_Application = Gtk::Application::create("org.robotronik.simulation");
+    Gsv::init();
 
 
     Glib::RefPtr<Gtk::Builder> refBuilder = Gtk::Builder::create();
@@ -59,26 +40,17 @@ int Simulation::init() {
             sigc::mem_fun(*this, &Simulation::on_plateau_click) );
 
         refBuilder->get_widget_derived("Plateau", plateau);
-        plateau->show();
+
+        refBuilder->get_widget("UART_view", UART_view);
+
+        UART_tbuffer = Gtk::TextBuffer::create();
+
         return 0;
     } else
         return 1;
 }
 int Simulation::start() {
     return m_Application->run(*m_Window);
-}
-
-void bouge_robot_sdl(int x, int y, double alpha){
-    m_Simulation->plateau->setRobotPosition(x, y, alpha);
-}
-void dessine_obstacle_rond(int cx, int cy, int r){
-    m_Simulation->plateau->setObstacleRond(cx, cy, r);
-}
-void dessine_obstacle_ligne(int x1, int y1, int x2, int y2){
-    m_Simulation->plateau->setObstacleLine(x1, y1, x2, y2);
-}
-void dessine_point_passage_carto(int x, int y, int type) {
-    m_Simulation->plateau->setPointPassageCarto(x, y, type);
 }
 
 bool Simulation::on_plateau_click(GdkEventButton* event) {
