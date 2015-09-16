@@ -30,7 +30,7 @@ TableDrawingArea::TableDrawingArea(BaseObjectType* cobject,
     surfaceObstacles    = Cairo::ImageSurface::create(
         Cairo::Format::FORMAT_ARGB32, pix_long, pix_larg);
     contextObstacles    = Cairo::Context::create(surfaceObstacles);
-
+    contextObstacles->set_line_width(3);
 }
 
 bool TableDrawingArea::on_draw(const Cairo::RefPtr<Cairo::Context>& cr) {
@@ -88,12 +88,27 @@ void TableDrawingArea::addPointPassageCarto(double x, double y, int type){
     double  pix_x =                 x /PLATEAU_SCALE,
             pix_y = (PLATEAU_LARG - y)/PLATEAU_SCALE;
 
-    contextCartographie->set_source_rgba(1,1,1,1);
-
     contextCartographie->rectangle(
         pix_x-CARTO_POINT_SIZE/2,
         pix_y-CARTO_POINT_SIZE/2,
         CARTO_POINT_SIZE, CARTO_POINT_SIZE);
+
+    switch(type) {
+        case 0: // Point ouvert
+            contextCartographie->set_source_rgba(0.0,0.0,1.0,0.5);
+            break;
+        case 1: // Point visité
+            contextCartographie->set_source_rgba(0.0,0.0,0.5,1.0);
+            break;
+        case 2: // Point de passage réel
+            contextCartographie->set_source_rgba(0.0,1.0,0.0,1.0);
+            break;
+        case 3: // Point borne
+            contextCartographie->set_source_rgba(1.0,1.0,1.0,1.0);
+            break;
+        default:
+            contextCartographie->set_source_rgba(1.0,1.0,1.0,1.0);
+    }
 
     contextCartographie->fill();
 
@@ -106,12 +121,6 @@ void TableDrawingArea::drawPointsPassageCartoOnTable(const Cairo::RefPtr<Cairo::
 }
 
 // Dessin des obstacles de la cartographie
-void TableDrawingArea::drawObstacleRond(int cx, int cy, int r){
-
-}
-void TableDrawingArea::drawObstacleLine(int x1, int y1, int x2, int y2){
-
-}
 void TableDrawingArea::drawObstaclesOnTable(const Cairo::RefPtr<Cairo::Context>& cr){
     cr->set_source(surfaceObstacles, 0., 0.);
     cr->paint();
@@ -130,10 +139,21 @@ void TableDrawingArea::drawTrajectoireOnTable(const Cairo::RefPtr<Cairo::Context
 
 
 void TableDrawingArea::addObstacleRond(int cx, int cy, int r){
-
+    contextObstacles->arc(cx /PLATEAU_SCALE,
+          (PLATEAU_LARG - cy)/PLATEAU_SCALE,
+          r/PLATEAU_SCALE, 0, 2 * M_PI);
+    contextObstacles->set_source_rgba(1,0,0,1);
+    contextObstacles->stroke_preserve();
+    contextObstacles->set_source_rgba(1,0,0,0.5);
+    contextObstacles->fill();
     queue_draw();
 }
 void TableDrawingArea::addObstacleLine(int x1, int y1, int x2, int y2){
-
+    contextObstacles->set_source_rgba(1,0,0,0.5);
+    contextObstacles->move_to(x1 /PLATEAU_SCALE,
+              (PLATEAU_LARG - y1)/PLATEAU_SCALE);
+    contextObstacles->line_to(x2 /PLATEAU_SCALE,
+              (PLATEAU_LARG - y2)/PLATEAU_SCALE);
+    contextObstacles->stroke();
     queue_draw();
 }

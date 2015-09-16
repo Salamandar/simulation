@@ -23,28 +23,6 @@ bool setRobotPositionFromAsservissement() {
     return true;
 }
 
-int main() {
-    m_Simulation = new Simulation();
-    m_Simulation->init();
-
-    pthread_t uiThread;
-    pthread_create(&uiThread, NULL, &start_simulation_thread, NULL);
-
-    init_UART_thread();
-
-    std::cout << "This is the working thread !" << std::endl;
-
-    m_Simulation->plateau->addPointPassageCarto(0,00,0);
-    //Glib::signal_timeout().connect( sigc::ptr_fun(&setRobotPositionFromAsservissement), 20);
-
-    pause();
-
-    return 0;
-}
-
-
-
-
 void bouge_robot_sdl(int x, int y, double alpha){
     m_Simulation->plateau->setRobotPosition(x, y, alpha);
 }
@@ -57,3 +35,32 @@ void dessine_obstacle_ligne(int x1, int y1, int x2, int y2){
 void dessine_point_passage_carto(int x, int y, int type) {
     m_Simulation->plateau->addPointPassageCarto(x, y, type);
 }
+
+
+int main() {
+    m_Simulation = new Simulation();
+    m_Simulation->init();
+
+    pthread_t uiThread;
+    pthread_create(&uiThread, NULL, &start_simulation_thread, NULL);
+
+    init_UART_thread();
+
+    std::cout << "This is the working thread !" << std::endl;
+
+    dessine_obstacle_ligne(0,0,1000,1500);
+    dessine_obstacle_rond(1000,1500,300);
+
+    for (int i = 0; i < 20; ++i)
+    {
+        dessine_point_passage_carto(100*i,100*i,i%4);
+        /* code */
+    }
+    //Glib::signal_timeout().connect( sigc::ptr_fun(&setRobotPositionFromAsservissement), 20);
+
+    pause();
+
+    return 0;
+}
+
+

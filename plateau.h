@@ -16,7 +16,7 @@
 #define ROBOT_L 40
 
 // Cartographie
-#define CARTO_POINT_SIZE 5
+#define CARTO_POINT_SIZE 10
 
 #define IMAGE_PLATEAU "plateau.png"
 
@@ -65,8 +65,6 @@ protected:
     // Dessin des obstacles de la cartographie
     Cairo::RefPtr<Cairo::Surface> surfaceObstacles;
     Cairo::RefPtr<Cairo::Context> contextObstacles;
-    void drawObstacleRond(int cx, int cy, int r);
-    void drawObstacleLine(int x1, int y1, int x2, int y2);
     void drawObstaclesOnTable(const Cairo::RefPtr<Cairo::Context>& cr);
 
     int robot_real_x=100,
