@@ -9,12 +9,26 @@
 int Simulation::init() {
     // Obtain gtk's global lock
     m_Application = Gtk::Application::create("org.robotronik.simulation");
-    Gsv::init();
-
 
     Glib::RefPtr<Gtk::Builder> refBuilder = Gtk::Builder::create();
+
     try {
-    refBuilder->add_from_file("Window.glade");
+        refBuilder->add_from_file("Window.glade");
+
+        refBuilder->get_widget("GlobalWindow", m_Window);
+        m_Window->set_title("Simulation Robotronik");
+
+        refBuilder->get_widget("PlateauEventBox", PlateauEventBox);
+        PlateauEventBox->set_events(Gdk::BUTTON_PRESS_MASK);
+        PlateauEventBox->signal_button_press_event().connect(
+            sigc::mem_fun(*this, &Simulation::on_plateau_click) );
+
+        refBuilder->get_widget_derived("Plateau", plateau);
+
+        Gsv::init();
+        m_communicationView.init(refBuilder);
+        refBuilder->get_widget("CommunicationSourceView", UART_view);
+        UART_tbuffer = Gtk::TextBuffer::create();
 
     } catch(const Glib::FileError& ex) {
         std::cerr << "FileError: "   <<ex.what() << std::endl;
@@ -28,27 +42,8 @@ int Simulation::init() {
         std::cerr << "BuilderError: "<<ex.what() << std::endl;
         return 1;
     }
-
-    refBuilder->get_widget("GlobalWindow", m_Window);
-
-    if(m_Window) {
-        m_Window->set_title("Simulation Robotronik");
-
-        refBuilder->get_widget("PlateauEventBox", PlateauEventBox);
-        PlateauEventBox->set_events(Gdk::BUTTON_PRESS_MASK);
-        PlateauEventBox->signal_button_press_event().connect(
-            sigc::mem_fun(*this, &Simulation::on_plateau_click) );
-
-        refBuilder->get_widget_derived("Plateau", plateau);
-
-        refBuilder->get_widget("UART_view", UART_view);
-
-        UART_tbuffer = Gtk::TextBuffer::create();
-
-        return 0;
-    } else
-        return 1;
 }
+
 int Simulation::start() {
     return m_Application->run(*m_Window);
 }

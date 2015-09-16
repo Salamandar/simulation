@@ -11,32 +11,27 @@
         <property name="can_focus">False</property>
         <property name="orientation">vertical</property>
         <child>
-          <object class="GtkFrame" id="UART_frame">
+          <object class="GtkFrame" id="CommunicationFrame">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="label_xalign">0</property>
             <property name="shadow_type">none</property>
             <child>
-              <object class="GtkScrolledWindow" id="scrolledwindow1">
+              <object class="GtkScrolledWindow" id="CommunicationScrolled">
                 <property name="width_request">400</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="shadow_type">out</property>
                 <child>
-                  <object class="GtkSourceView" id="UART_view">
+                  <object class="GtkSourceView" id="CommunicationSourceView">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="hexpand">True</property>
                     <property name="hscroll_policy">natural</property>
                     <property name="vscroll_policy">natural</property>
-                    <property name="pixels_below_lines">1</property>
-                    <property name="editable">False</property>
-                    <property name="left_margin">2</property>
-                    <property name="right_margin">2</property>
                     <property name="monospace">True</property>
                     <property name="show_line_numbers">True</property>
                     <property name="tab_width">4</property>
-                    <property name="highlight_current_line">True</property>
                     <property name="indent_on_tab">False</property>
                     <property name="background_pattern">grid</property>
                   </object>
@@ -44,10 +39,10 @@
               </object>
             </child>
             <child type="label">
-              <object class="GtkLabel" id="UART">
+              <object class="GtkLabel" id="Communication">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="label" translatable="yes">UART</property>
+                <property name="label" translatable="yes">Communication</property>
                 <property name="xalign">1</property>
                 <property name="yalign">0</property>
               </object>
@@ -76,9 +71,6 @@
             <property name="left_attach">0</property>
             <property name="top_attach">0</property>
           </packing>
-        </child>
-        <child>
-          <placeholder/>
         </child>
       </object>
     </child>

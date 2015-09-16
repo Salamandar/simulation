@@ -1,5 +1,6 @@
 #include <gtkmm.h>
 #include <gtksourceviewmm.h>
+#include "communication_view.h"
 #include "plateau.h"
 
 void set_trajectoire_xy_absolu(int x, int y);
@@ -22,6 +23,8 @@ public:
 
     // Called from the worker thread.
     void notify();
+
+    CommunicationView m_communicationView;
 
     Gtk::Window* m_Window;
     Plateau* plateau;
