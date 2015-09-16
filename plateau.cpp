@@ -1,6 +1,5 @@
 #include "plateau.h"
 #include <iostream>
-#include <gdkmm/general.h>
 
 TableDrawingArea::TableDrawingArea(BaseObjectType* cobject,
     const Glib::RefPtr<Gtk::Builder>&)
@@ -9,12 +8,18 @@ TableDrawingArea::TableDrawingArea(BaseObjectType* cobject,
     set_size_request(pix_long, pix_larg);
 
     try {
-        background = Gdk::Pixbuf::create_from_file(IMAGE_PLATEAU);
+        background = Cairo::ImageSurface::create_from_png(IMAGE_PLATEAU);
     } catch(const Glib::Error& ex) {
     std::cerr << "Erreur de chargement de l'image du plateau: "
         << ex.what() << std::endl;
         exit(1);
     }
+
+    // Initialisation du tracé de la trajectoire du robot
+    surfaceTrajectoire = Cairo::ImageSurface::create(
+        Cairo::Format::FORMAT_ARGB32, pix_long, pix_larg);
+    contextTrajectoire = Cairo::Context::create(surfaceTrajectoire);
+    contextTrajectoire->set_line_width(1.5);
 
     // Initialisation de la carto
     surfaceCartographie = Cairo::ImageSurface::create(
@@ -30,12 +35,13 @@ TableDrawingArea::TableDrawingArea(BaseObjectType* cobject,
 
 bool TableDrawingArea::on_draw(const Cairo::RefPtr<Cairo::Context>& cr) {
     // Draw the image as background
-    Gdk::Cairo::set_source_pixbuf(cr, background, 0, 0);
+    cr->set_source(background, 0, 0);
     cr->paint();
 
     drawPointsPassageCartoOnTable(cr);
     drawObstaclesOnTable(cr);
     drawRobot(cr);
+    drawTrajectoireOnTable(cr);
 
     return true;
 }
@@ -57,6 +63,23 @@ void TableDrawingArea::drawRobot(const Cairo::RefPtr<Cairo::Context>& cr) {
 
     cr->set_source_rgba(0,0,0,1);
     cr->fill();
+
+    // Dessin de la trajectoire
+    contextTrajectoire->set_source_rgba(1,1,1,1);
+    // Single pixel
+    /*contextTrajectoire->rectangle(robot_real_x /PLATEAU_SCALE,
+                (PLATEAU_LARG -   robot_real_y)/PLATEAU_SCALE,1,1);
+    contextTrajectoire->fill();*/
+    // Line
+    static double old_real_x = robot_real_x,
+                  old_real_y = robot_real_y;
+    contextTrajectoire->move_to(old_real_x /PLATEAU_SCALE,
+                (PLATEAU_LARG - old_real_y)/PLATEAU_SCALE);
+    contextTrajectoire->line_to(robot_real_x /PLATEAU_SCALE,
+                (PLATEAU_LARG - robot_real_y)/PLATEAU_SCALE);
+    contextTrajectoire->stroke();
+    old_real_x = robot_real_x;
+    old_real_y = robot_real_y;
 }
 
 
@@ -74,6 +97,7 @@ void TableDrawingArea::addPointPassageCarto(double x, double y, int type){
 
     contextCartographie->fill();
 
+    queue_draw();
 }
 
 void TableDrawingArea::drawPointsPassageCartoOnTable(const Cairo::RefPtr<Cairo::Context>& cr){
@@ -93,14 +117,15 @@ void TableDrawingArea::drawObstaclesOnTable(const Cairo::RefPtr<Cairo::Context>&
     cr->paint();
 }
 
-
-
-
 void TableDrawingArea::setRobotPosition(int real_x,int real_y, double alpha) {
     robot_real_x = real_x;
     robot_real_y = real_y;
     robot_alpha  = alpha;
     queue_draw();
+}
+void TableDrawingArea::drawTrajectoireOnTable(const Cairo::RefPtr<Cairo::Context>& cr){
+    cr->set_source(surfaceTrajectoire, 0., 0.);
+    cr->paint();
 }
 
 

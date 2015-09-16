@@ -48,12 +48,15 @@ public:
 protected:
     // Drawing functions
     virtual bool on_draw(const Cairo::RefPtr<Cairo::Context>& cr);
-    void drawRobot(const Cairo::RefPtr<Cairo::Context>& cr);
 
     // Dessin de la table
-    Glib::RefPtr<Gdk::Pixbuf> background;
+    Cairo::RefPtr<Cairo::Surface> background;
 
-
+    // Dessin du robot (direct) et de sa trajectoire (surface)
+    void drawRobot(const Cairo::RefPtr<Cairo::Context>& cr);
+    Cairo::RefPtr<Cairo::Surface> surfaceTrajectoire;
+    Cairo::RefPtr<Cairo::Context> contextTrajectoire;
+    void drawTrajectoireOnTable(const Cairo::RefPtr<Cairo::Context>& cr);
     // Dessin des chemins de la cartographie
     Cairo::RefPtr<Cairo::Surface> surfaceCartographie;
     Cairo::RefPtr<Cairo::Context> contextCartographie;
