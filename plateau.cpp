@@ -63,23 +63,7 @@ void TableDrawingArea::drawRobot(const Cairo::RefPtr<Cairo::Context>& cr) {
 
     cr->set_source_rgba(0,0,0,1);
     cr->fill();
-
-    // Dessin de la trajectoire
-    contextTrajectoire->set_source_rgba(1,1,1,1);
-    // Single pixel
-    /*contextTrajectoire->rectangle(robot_real_x /PLATEAU_SCALE,
-                (PLATEAU_LARG -   robot_real_y)/PLATEAU_SCALE,1,1);
-    contextTrajectoire->fill();*/
-    // Line
-    static double old_real_x = robot_real_x,
-                  old_real_y = robot_real_y;
-    contextTrajectoire->move_to(old_real_x /PLATEAU_SCALE,
-                (PLATEAU_LARG - old_real_y)/PLATEAU_SCALE);
-    contextTrajectoire->line_to(robot_real_x /PLATEAU_SCALE,
-                (PLATEAU_LARG - robot_real_y)/PLATEAU_SCALE);
-    contextTrajectoire->stroke();
-    old_real_x = robot_real_x;
-    old_real_y = robot_real_y;
+    cr->rotate(-robot_alpha);
 }
 
 
@@ -130,6 +114,23 @@ void TableDrawingArea::setRobotPosition(int real_x,int real_y, double alpha) {
     robot_real_x = real_x;
     robot_real_y = real_y;
     robot_alpha  = alpha;
+
+    // Dessin de la trajectoire
+    contextTrajectoire->set_source_rgba(1,1,1,1);
+    // Single pixel
+    /*contextTrajectoire->rectangle(robot_real_x /PLATEAU_SCALE,
+                (PLATEAU_LARG -   robot_real_y)/PLATEAU_SCALE,1,1);
+    contextTrajectoire->fill();*/
+    // Line
+    static double old_real_x = robot_real_x,
+                  old_real_y = robot_real_y;
+    contextTrajectoire->move_to(old_real_x /PLATEAU_SCALE,
+                (PLATEAU_LARG - old_real_y)/PLATEAU_SCALE);
+    contextTrajectoire->line_to(robot_real_x /PLATEAU_SCALE,
+                (PLATEAU_LARG - robot_real_y)/PLATEAU_SCALE);
+    contextTrajectoire->stroke();
+    old_real_x = robot_real_x;
+    old_real_y = robot_real_y;
     queue_draw();
 }
 void TableDrawingArea::drawTrajectoireOnTable(const Cairo::RefPtr<Cairo::Context>& cr){
