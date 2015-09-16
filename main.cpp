@@ -1,8 +1,9 @@
 #include <stdio.h>
 #include <pthread.h>
 
-#include "init_gtk.h"
+#include "simulation.h"
 #include "UART.h"
+#include "asservissement.h"
 
 #include <iostream>
 
@@ -13,7 +14,16 @@ void* start_simulation_thread(void*) {
     exit(0);
 }
 
-int main(int argc, char const *argv[]) {
+
+bool setRobotPositionFromAsservissement() {
+    bouge_robot_sdl(
+        get_x_actuel()/PLATEAU_SCALE,
+        (PLATEAU_LARG - get_y_actuel())/PLATEAU_SCALE,
+        (double)get_theta_actuel()/-1000);
+    return true;
+}
+
+int main() {
     m_Simulation = new Simulation();
     m_Simulation->init();
 
@@ -22,11 +32,10 @@ int main(int argc, char const *argv[]) {
 
     init_UART_thread();
 
-    std::cout << "auie" << std::endl;
+    std::cout << "This is the working thread !" << std::endl;
 
     m_Simulation->plateau->addPointPassageCarto(0,00,0);
-
-
+    //Glib::signal_timeout().connect( sigc::ptr_fun(&setRobotPositionFromAsservissement), 20);
 
     pause();
 

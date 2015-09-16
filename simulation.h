@@ -1,3 +1,6 @@
+#ifndef SIMULATION_H
+#define SIMULATION_H
+
 #include <gtkmm/application.h>
 #include <gtkmm/builder.h>
 #include <gtkmm/window.h>
@@ -48,3 +51,5 @@ protected:
     Glib::Dispatcher m_Dispatcher;
     Glib::Threads::Thread* m_UiThread;
 };
+
+#endif

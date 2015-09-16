@@ -1,3 +1,5 @@
+#ifndef COMMUNICATION_VIEW_H
+#define COMMUNICATION_VIEW_H
 #include <gtkmm.h>
 #include <gtksourceviewmm.h>
 
@@ -24,3 +26,5 @@ private:
 //    Gdk::Color m_historyColors[3];
 //    Gdk::Color m_backgroundColor;
 };
+
+#endif

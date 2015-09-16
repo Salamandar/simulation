@@ -1,4 +1,4 @@
-#include "init_gtk.h"
+#include "simulation.h"
 #include <iostream>
 
 int Simulation::init() {
@@ -22,6 +22,7 @@ int Simulation::init() {
 
         Gsv::init();
         m_communicationView.init(refBuilder);
+        return 0;
 
     } catch(const Glib::FileError& ex) {
         std::cerr << "FileError: "   <<ex.what() << std::endl;
@@ -38,6 +39,7 @@ int Simulation::init() {
 }
 
 int Simulation::start() {
+    std::cout << "This is the UI thread !" << std::endl;
     return m_Application->run(*m_Window);
 }
 

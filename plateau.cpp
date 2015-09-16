@@ -1,20 +1,6 @@
 #include "plateau.h"
-#include "asservissement.h"
-#include "init_gtk.h"
 #include <iostream>
 #include <gdkmm/general.h>
-
-
-
-bool setRobotPositionFromAsservissement() {
-    bouge_robot_sdl(
-        get_x_actuel()/PLATEAU_SCALE,
-        (PLATEAU_LARG - get_y_actuel())/PLATEAU_SCALE,
-        (double)get_theta_actuel()/-1000);
-    return true;
-}
-
-
 
 TableDrawingArea::TableDrawingArea(BaseObjectType* cobject,
     const Glib::RefPtr<Gtk::Builder>&)
@@ -24,24 +10,22 @@ TableDrawingArea::TableDrawingArea(BaseObjectType* cobject,
 
     try {
         background = Gdk::Pixbuf::create_from_file(IMAGE_PLATEAU);
-
-    } catch(const Glib::FileError& ex) {
-    std::cerr << "FileError: " << ex.what() << std::endl;
-
-    } catch(const Gdk::PixbufError& ex) {
-    std::cerr << "PixbufError: " << ex.what() << std::endl;
+    } catch(const Glib::Error& ex) {
+    std::cerr << "Erreur de chargement de l'image du plateau: "
+        << ex.what() << std::endl;
+        exit(1);
     }
 
     // Initialisation de la carto
     surfaceCartographie = Cairo::ImageSurface::create(
         Cairo::Format::FORMAT_ARGB32, pix_long, pix_larg);
     contextCartographie = Cairo::Context::create(surfaceCartographie);
+
     // Initialisation des obstacles
     surfaceObstacles    = Cairo::ImageSurface::create(
         Cairo::Format::FORMAT_ARGB32, pix_long, pix_larg);
     contextObstacles    = Cairo::Context::create(surfaceObstacles);
 
-    //Glib::signal_timeout().connect( sigc::ptr_fun(&setRobotPositionFromAsservissement), 20);
 }
 
 bool TableDrawingArea::on_draw(const Cairo::RefPtr<Cairo::Context>& cr) {
@@ -116,8 +100,6 @@ void TableDrawingArea::setRobotPosition(int real_x,int real_y, double alpha) {
     robot_real_x = real_x;
     robot_real_y = real_y;
     robot_alpha  = alpha;
-    std::cout << robot_real_x << " " << robot_real_y << std::endl;
-
     queue_draw();
 }
 

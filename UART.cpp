@@ -1,6 +1,7 @@
-
-#include "init_gtk.h"
 #include "asservissement.h"
+#include "UART.h"
+#include <stdio.h>
+#include <pthread.h>
 
 #define RX_BUFFER_SIZE 40
 static unsigned char rxBuffer[RX_BUFFER_SIZE];
