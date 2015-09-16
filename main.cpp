@@ -36,6 +36,15 @@ void dessine_point_passage_carto(int x, int y, int type) {
     m_Simulation->plateau->addPointPassageCarto(x, y, type);
 }
 
+bool bouge_robot() {
+    static double x = 0, y = 0, alpha = 0;
+    bouge_robot_sdl(x,y,alpha);
+    x+=10;
+    y+=10;
+    alpha+=0.10;
+    return true;
+}
+
 
 int main() {
     m_Simulation = new Simulation();
@@ -52,11 +61,9 @@ int main() {
     dessine_obstacle_rond(1000,1500,300);
 
     for (int i = 0; i < 20; ++i)
-    {
         dessine_point_passage_carto(100*i,100*i,i%4);
-        /* code */
-    }
-    //Glib::signal_timeout().connect( sigc::ptr_fun(&setRobotPositionFromAsservissement), 20);
+
+    Glib::signal_timeout().connect( sigc::ptr_fun(&bouge_robot), 20);
 
     pause();
 
