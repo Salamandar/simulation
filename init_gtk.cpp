@@ -1,10 +1,5 @@
 #include "init_gtk.h"
-
 #include <iostream>
-
-#include "plateau.h"
-
-#define POINT_SIZE 40
 
 int Simulation::init() {
     // Obtain gtk's global lock
@@ -27,8 +22,6 @@ int Simulation::init() {
 
         Gsv::init();
         m_communicationView.init(refBuilder);
-        refBuilder->get_widget("CommunicationSourceView", UART_view);
-        UART_tbuffer = Gtk::TextBuffer::create();
 
     } catch(const Glib::FileError& ex) {
         std::cerr << "FileError: "   <<ex.what() << std::endl;
