@@ -59,12 +59,12 @@
           </packing>
         </child>
         <child>
-          <object class="GtkEventBox" id="PlateauEventBox">
+          <object class="GtkEventBox" id="TableEventBox">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="above_child">True</property>
             <child>
-              <object class="GtkDrawingArea" id="Plateau">
+              <object class="GtkDrawingArea" id="TableDrawingArea">
                 <property name="width_request">600</property>
                 <property name="height_request">400</property>
                 <property name="visible">True</property>

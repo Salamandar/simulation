@@ -1,25 +1,26 @@
 #include "plateau.h"
-#include <iostream>
-
 #include "asservissement.h"
 #include "init_gtk.h"
+#include <iostream>
+#include <gdkmm/general.h>
+
+
 
 bool setRobotPositionFromAsservissement() {
     bouge_robot_sdl(
         get_x_actuel()/PLATEAU_SCALE,
-        (PLATEAU_H - get_y_actuel())/PLATEAU_SCALE,
+        (PLATEAU_LARG - get_y_actuel())/PLATEAU_SCALE,
         (double)get_theta_actuel()/-1000);
     return true;
 }
 
 
 
-Plateau::Plateau(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& refGlade)
-: Gtk::DrawingArea(cobject),
-  m_refGlade(refGlade) {
-    set_size_request(
-        PLATEAU_L/PLATEAU_SCALE,
-        PLATEAU_H/PLATEAU_SCALE);
+TableDrawingArea::TableDrawingArea(BaseObjectType* cobject,
+    const Glib::RefPtr<Gtk::Builder>&)
+: Gtk::DrawingArea(cobject) {
+
+    set_size_request(pix_long, pix_larg);
 
     try {
         background = Gdk::Pixbuf::create_from_file(IMAGE_PLATEAU);
@@ -31,26 +32,34 @@ Plateau::Plateau(BaseObjectType* cobject, const Glib::RefPtr<Gtk::Builder>& refG
     std::cerr << "PixbufError: " << ex.what() << std::endl;
     }
 
-    Glib::signal_timeout().connect( sigc::ptr_fun(&setRobotPositionFromAsservissement), 20 );
+    // Initialisation de la carto
+    surfaceCartographie = Cairo::ImageSurface::create(
+        Cairo::Format::FORMAT_ARGB32, pix_long, pix_larg);
+    contextCartographie = Cairo::Context::create(surfaceCartographie);
+    // Initialisation des obstacles
+    surfaceObstacles    = Cairo::ImageSurface::create(
+        Cairo::Format::FORMAT_ARGB32, pix_long, pix_larg);
+    contextObstacles    = Cairo::Context::create(surfaceObstacles);
+
+    //Glib::signal_timeout().connect( sigc::ptr_fun(&setRobotPositionFromAsservissement), 20);
 }
 
-bool Plateau::on_draw(const Cairo::RefPtr<Cairo::Context>& cr) {
-    //Gtk::Allocation allocation = get_allocation();
-    //const int width = allocation.get_width();
-    //const int height = allocation.get_height();
-
+bool TableDrawingArea::on_draw(const Cairo::RefPtr<Cairo::Context>& cr) {
     // Draw the image as background
     Gdk::Cairo::set_source_pixbuf(cr, background, 0, 0);
     cr->paint();
 
+    drawPointsPassageCartoOnTable(cr);
+    drawObstaclesOnTable(cr);
     drawRobot(cr);
 
     return true;
 }
 
-void Plateau::drawRobot(const Cairo::RefPtr<Cairo::Context>& cr) {
+void TableDrawingArea::drawRobot(const Cairo::RefPtr<Cairo::Context>& cr) {
     // Position
-    cr->move_to(robot_x,robot_y);
+    cr->move_to(        robot_real_x /PLATEAU_SCALE,
+        (PLATEAU_LARG - robot_real_y)/PLATEAU_SCALE);
 
     // Offset for the robot to be well centered
     cr->rotate(robot_alpha);
@@ -67,36 +76,57 @@ void Plateau::drawRobot(const Cairo::RefPtr<Cairo::Context>& cr) {
 }
 
 
-void Plateau::setRobotPosition(int x,int y, double alpha) {
-    robot_x = x;
-    robot_y = y;
-    robot_alpha = alpha;
+// Dessin des chemins de la cartographie
+void TableDrawingArea::addPointPassageCarto(double x, double y, int type){
+    double  pix_x =                 x /PLATEAU_SCALE,
+            pix_y = (PLATEAU_LARG - y)/PLATEAU_SCALE;
+
+    contextCartographie->set_source_rgba(1,1,1,1);
+
+    contextCartographie->rectangle(
+        pix_x-CARTO_POINT_SIZE/2,
+        pix_y-CARTO_POINT_SIZE/2,
+        CARTO_POINT_SIZE, CARTO_POINT_SIZE);
+
+    contextCartographie->fill();
+
+}
+
+void TableDrawingArea::drawPointsPassageCartoOnTable(const Cairo::RefPtr<Cairo::Context>& cr){
+    cr->set_source(surfaceCartographie, 0, 0);
+    cr->paint();
+}
+
+// Dessin des obstacles de la cartographie
+void TableDrawingArea::drawObstacleRond(int cx, int cy, int r){
+
+}
+void TableDrawingArea::drawObstacleLine(int x1, int y1, int x2, int y2){
+
+}
+void TableDrawingArea::drawObstaclesOnTable(const Cairo::RefPtr<Cairo::Context>& cr){
+    cr->set_source(surfaceObstacles, 0., 0.);
+    cr->paint();
+}
+
+
+
+
+void TableDrawingArea::setRobotPosition(int real_x,int real_y, double alpha) {
+    robot_real_x = real_x;
+    robot_real_y = real_y;
+    robot_alpha  = alpha;
+    std::cout << robot_real_x << " " << robot_real_y << std::endl;
 
     queue_draw();
 }
 
 
-void Plateau::setObstacleRond(int cx, int cy, int r){
+void TableDrawingArea::addObstacleRond(int cx, int cy, int r){
 
     queue_draw();
 }
-void Plateau::setObstacleLine(int x1, int y1, int x2, int y2){
+void TableDrawingArea::addObstacleLine(int x1, int y1, int x2, int y2){
 
-    queue_draw();
-}
-void Plateau::setPointPassageCarto(int x, int y, int type){
-
-    switch (type) {
-        case 0: // Point ouvert
-            break;
-        case 1: // Point visité
-            break;
-        case 2: // Point de passage réel
-            break;
-        case 3: // Point borne
-            break;
-        default:
-            break;
-    }
     queue_draw();
 }

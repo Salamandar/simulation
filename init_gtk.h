@@ -1,4 +1,8 @@
-#include <gtkmm.h>
+#include <gtkmm/application.h>
+#include <gtkmm/builder.h>
+#include <gtkmm/window.h>
+#include <gtkmm/textbuffer.h>
+#include <gtkmm/eventbox.h>
 #include <gtksourceviewmm.h>
 #include "plateau.h"
 
@@ -24,7 +28,7 @@ public:
     void notify();
 
     Gtk::Window* m_Window;
-    Plateau* plateau;
+    TableDrawingArea* plateau;
 
     Gsv::View *UART_view;
     Glib::RefPtr<Gtk::TextBuffer> UART_tbuffer;
@@ -34,8 +38,8 @@ protected:
     // Member data.
     Glib::RefPtr<Gtk::Application> m_Application;
 
-    Gtk::EventBox* PlateauEventBox;
-    bool on_plateau_click(GdkEventButton*);
+    Gtk::EventBox* TableEventBox;
+    bool on_plateau_click(GdkEvent*);
 
 
     Glib::Dispatcher m_Dispatcher;
