@@ -53,7 +53,7 @@ void TableDrawingArea::drawRobot(const Cairo::RefPtr<Cairo::Context>& cr) {
 
     // Offset for the robot to be well centered
     cr->rotate(robot_alpha);
-    cr->rel_move_to(0,ROBOT_L/2);
+    cr->rel_move_to(0,ROBOT_L/3);
 
     // Shape
     cr->rel_line_to(-ROBOT_L/2,0);
