@@ -33,11 +33,13 @@ hardware-lib: $(BUILD_DIR)/lib$(ARCH).a
 
 $(BUILD_DIR)/lib$(ARCH).a: $(OBJ) $(OBJ_S)
 
-simulation: $(OBJ)
+simulation: $(OBJ) $(HARDW_LIB)
 #	@make -C $(ASSER_DIR) asser_robot
 	@echo "	++	$(PROJECT)|$(notdir $@)"
 	@$(++) $(CFLAGS) -o $@ $^ $(LDFLAGS)
 
+
+$(HARDW_LIB): hardware_lib
 
 ##### Compilation des sources
 $(BUILD_DIR)/%.o: %.cpp | $(BUILD_DIR)

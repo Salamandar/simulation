@@ -53,7 +53,7 @@ int main() {
     pthread_t uiThread;
     pthread_create(&uiThread, NULL, &start_simulation_thread, NULL);
 
-    init_UART_thread();
+    init_UART();
 
     std::cout << "This is the working thread !" << std::endl;
 
