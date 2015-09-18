@@ -47,12 +47,13 @@ bool TableDrawingArea::on_draw(const Cairo::RefPtr<Cairo::Context>& cr) {
 }
 
 void TableDrawingArea::drawRobot(const Cairo::RefPtr<Cairo::Context>& cr) {
+    cr->save();
     // Position
     cr->move_to(        robot_real_x /PLATEAU_SCALE,
         (PLATEAU_LARG - robot_real_y)/PLATEAU_SCALE);
 
     // Offset for the robot to be well centered
-    cr->rotate(robot_alpha);
+    cr->rotate((M_PI - robot_alpha)/1000);
     cr->rel_move_to(0,ROBOT_L/3);
 
     // Shape
@@ -63,7 +64,7 @@ void TableDrawingArea::drawRobot(const Cairo::RefPtr<Cairo::Context>& cr) {
 
     cr->set_source_rgba(0,0,0,1);
     cr->fill();
-    cr->rotate(-robot_alpha);
+    cr->restore();
 }
 
 

@@ -1,5 +1,6 @@
 #include "simulation.h"
 #include <iostream>
+#include "asservissement.h"
 
 int Simulation::init() {
     // Obtain gtk's global lock
@@ -8,7 +9,7 @@ int Simulation::init() {
     Glib::RefPtr<Gtk::Builder> refBuilder = Gtk::Builder::create();
 
     try {
-        refBuilder->add_from_file("Window.glade");
+        refBuilder->add_from_file(SIMULATION_UI_FILE);
 
         refBuilder->get_widget("GlobalWindow", m_Window);
         m_Window->set_title("Simulation Robotronik");

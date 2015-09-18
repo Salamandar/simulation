@@ -1,10 +1,10 @@
 int get_theta_actuel(){
     return 0;
 }
-int get_x_actuel(){
+float float_get_x_actuel(){
     return 0;
 }
-int get_y_actuel(){
+float float_get_y_actuel(){
     return 0;
 }
 

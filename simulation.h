@@ -10,11 +10,9 @@
 #include "communication_view.h"
 #include "plateau.h"
 
-void set_trajectoire_xy_absolu(int x, int y);
+#define SIMULATION_UI_FILE "Window.glade"
 
 int init_simulation();
-
-void bouge_robot_sdl(int x, int y, double alpha);
 
 int init_gtk();
 
