@@ -2,6 +2,7 @@
 #define COMMUNICATION_VIEW_H
 #include <gtkmm.h>
 #include <gtksourceviewmm.h>
+#include <string.h>
 
 class CommunicationView {
 public:
@@ -13,18 +14,14 @@ public:
 
     void clear();
 
+    void append_received_line(const std::string ligne);
+
 private:
     Gsv::View*                  m_sourceView;
     Glib::RefPtr<Gsv::Buffer>   m_sourceBuffer;
-
+    Glib::RefPtr<Gsv::Buffer::TagTable> m_tagTable;
 
     Gtk::ScrolledWindow *m_sourceScrolledWindow;
-
-    Glib::RefPtr<Gtk::TextBuffer::Tag> m_sourceTags[3];
-    Glib::RefPtr<Gtk::TextBuffer::TagTable> m_tagTable;
-
-//    Gdk::Color m_historyColors[3];
-//    Gdk::Color m_backgroundColor;
 };
 
 #endif
