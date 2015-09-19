@@ -21,7 +21,6 @@ bool bouge_robot() {
 int main() {
     init_hardware_GTK();
     init_UART();
-    std::cout << "auie" << std::endl;
 
     dessine_obstacle_ligne(0,0,1000,1500);
     dessine_obstacle_rond(1000,1500,300);
