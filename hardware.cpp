@@ -10,7 +10,7 @@
 
 Simulation* m_Simulation = 0;
 
-void* start_simulation_thread(void*) {
+void start_simulation_thread() {
     m_Simulation->start();
     exit(0);
 }
@@ -37,16 +37,18 @@ int init_hardware_GTK() {
     m_Simulation = new Simulation();
     m_Simulation->init();
 
-    pthread_t uiThread;
-    pthread_create(&uiThread, NULL, &start_simulation_thread, NULL);
+    if(!Glib::thread_supported()) Glib::thread_init();
 
-    int a = 0;
-    for (int i = 0; i < 500000; ++i)
-        a+=i;
-    std::cout << a ;
+    Glib::Thread* thread;
+    sigc::ptr_fun(&start_simulation_thread);
+    thread = Glib::Thread::create(sigc::ptr_fun(&start_simulation_thread), true);
 
     std::cout << "This is the working thread !" << std::endl;
     Glib::signal_timeout().connect( sigc::ptr_fun(&setRobotPositionFromAsservissement), 20);
 
     return 0;
+}
+
+Simulation* get_simulation() {
+    return m_Simulation;
 }
