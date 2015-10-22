@@ -12,6 +12,7 @@ include $(PARENT_DIR)/hardware/common.mk
 ################################################################################
 # Fichiers du projet
 
+EXEC=simulation
 
 ################################################################################
 # Fichiers source
@@ -33,7 +34,7 @@ hardware-lib: $(BUILD_DIR)/lib$(ARCH).a
 
 $(BUILD_DIR)/lib$(ARCH).a: $(OBJ) $(OBJ_S)
 
-simulation: $(OBJ) $(HARDW_LIB)
+$(EXEC): $(OBJ) $(HARDW_LIB)
 #	@make -C $(ASSER_DIR) asser_robot
 	@echo "	++	$(PROJECT)|$(notdir $@)"
 	@$(++) $(CFLAGS) -o $@ $^ $(LDFLAGS)
@@ -48,7 +49,3 @@ $(BUILD_DIR)/%.o: %.cpp | $(BUILD_DIR)
 
 $(BUILD_DIR):
 	@mkdir $(BUILD_DIR) $ -p
-
-
-run: simulation
-	./simulation
