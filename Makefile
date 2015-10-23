@@ -1,23 +1,23 @@
 PROJECT=Simulation
-default: simulation
+default: all
 # Default Options
 export ARCH   = PC
 export ROBOT ?= gros
 export SDL   ?= yes
 export DEBUG ?= _ALWAYS_
 
-export PARENT_DIR = ../
-include $(PARENT_DIR)/hardware/common.mk
+PARENT_DIR = ../
 
+# Constantes de compilation
+EXEC=simulation
+
+include $(PARENT_DIR)/hardware/common.mk
 ################################################################################
 # Fichiers du projet
 
-EXEC=simulation
 
 ################################################################################
 # Fichiers source
-
-
 
 SRC     = $(shell find . -name "*.cpp")
 HDR     = $(shell find . -name "*.h")
@@ -29,23 +29,21 @@ LDFLAGS+=     `pkg-config gtkmm-3.0 gtksourceviewmm-3.0 --libs`
 
 ################################################################################
 # Cibles du projet
+all: $(BUILD_DIR)/$(EXEC)
 
-hardware-lib: $(BUILD_DIR)/lib$(ARCH).a
-
-$(BUILD_DIR)/lib$(ARCH).a: $(OBJ) $(OBJ_S)
-
-$(EXEC): $(OBJ) $(HARDW_LIB)
-#	@make -C $(ASSER_DIR) asser_robot
+$(BUILD_DIR)/$(EXEC): $(OBJ) libHardware
+	@make -C $(ASSER_DIR) asser_robot
 	@echo "	++	$(PROJECT)|$(notdir $@)"
-	@$(++) $(CFLAGS) -o $@ $^ $(LDFLAGS)
+	@$(++) $(CFLAGS) -o $@ $(OBJ) -lHardware $(LDFLAGS)
 
 
-$(HARDW_LIB): hardware_lib
 
 ##### Compilation des sources
 $(BUILD_DIR)/%.o: %.cpp | $(BUILD_DIR)
 	@echo "	++	$(PROJECT)|$(notdir $@)"
 	@$(++) $(CFLAGS) -o $@ -c $^
 
+
 $(BUILD_DIR):
-	@mkdir $(BUILD_DIR) $ -p
+	@mkdir -p $(BUILD_DIR)/interfaces/
+

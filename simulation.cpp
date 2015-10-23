@@ -1,6 +1,6 @@
 #include "simulation.h"
 #include <iostream>
-#include "asservissement.h"
+#include "interfaces/asservissement.h"
 
 int Simulation::init() {
     // Obtain gtk's global lock
