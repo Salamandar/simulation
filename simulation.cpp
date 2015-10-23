@@ -17,7 +17,9 @@ int Simulation::init() {
         refBuilder->get_widget("TableEventBox", TableEventBox);
         TableEventBox->set_events(Gdk::BUTTON_PRESS_MASK);
         TableEventBox->signal_motion_notify_event().connect(
-            sigc::mem_fun(*this, &Simulation::on_plateau_click) );
+            sigc::mem_fun(*this, &Simulation::on_plateau_movem));
+        TableEventBox->signal_button_press_event().connect(
+            sigc::mem_fun(*this, &Simulation::on_plateau_click));
 
         refBuilder->get_widget_derived("TableDrawingArea", plateau);
 
@@ -44,7 +46,14 @@ int Simulation::start() {
     return m_Application->run(*m_Window);
 }
 
-bool Simulation::on_plateau_click(GdkEventMotion* event) {
+
+bool Simulation::on_plateau_movem(GdkEventMotion* event) {
+    int x =                 event->x*PLATEAU_SCALE;
+    int y = PLATEAU_LARG -  event->y*PLATEAU_SCALE;
+    set_trajectoire_xy_absolu(x, y);
+    return true;
+}
+bool Simulation::on_plateau_click(GdkEventButton* event) {
     int x =                 event->x*PLATEAU_SCALE;
     int y = PLATEAU_LARG -  event->y*PLATEAU_SCALE;
     set_trajectoire_xy_absolu(x, y);

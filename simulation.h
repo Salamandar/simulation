@@ -43,7 +43,8 @@ protected:
     Glib::RefPtr<Gtk::Application> m_Application;
 
     Gtk::EventBox* TableEventBox;
-    bool on_plateau_click(GdkEventMotion*);
+    bool on_plateau_movem(GdkEventMotion*);
+    bool on_plateau_click(GdkEventButton*);
 
 
     Glib::Dispatcher m_Dispatcher;
