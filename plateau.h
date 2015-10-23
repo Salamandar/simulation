@@ -38,9 +38,6 @@ public:
     void addObstacleRond(int cx, int cy, int r);
     void addObstacleLine(int x1, int y1, int x2, int y2);
 
-    bool aui();
-
-
     const int pix_larg = PLATEAU_LARG/PLATEAU_SCALE;
     const int pix_long = PLATEAU_LONG/PLATEAU_SCALE;
 
