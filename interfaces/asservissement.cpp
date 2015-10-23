@@ -10,7 +10,7 @@ Simulation* get_simulation();
 
 // Called to start the processing on the thread
 void AsservissementWorker::start() {
-        thread = Glib::Thread::create(sigc::mem_fun(*this, &AsservissementWorker::runWork), true);
+    thread = Glib::Thread::create(sigc::mem_fun(*this, &AsservissementWorker::runWork), true);
 }
 
 AsservissementWorker::~AsservissementWorker() {
@@ -28,6 +28,7 @@ int AsservissementWorker::get_y_actuel(){
     return y_actuel;
 }
 void AsservissementWorker::set_trajectoire_xy_absolu(int x, int y){
+    std::cout << "Demande de nouvelle trajectoire " << x << " " << y << std::endl;
     x_newTrajectoire = x;
     y_newTrajectoire = y;
     sig_AskNewTrajectoire();
