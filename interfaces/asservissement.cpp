@@ -37,6 +37,7 @@ void AsservissementWorker::set_trajectoire_xy_absolu(int x, int y){
 // This is where the real work happens
 void AsservissementWorker::runWork () {
     std::cout << "This is the asser working thread !" << std::endl;
+    this->sig_AskNewTrajectoire.connect(sigc::mem_fun(*this, &AsservissementWorker::nouvelle_trajectoire));
 
     while(true) {
         x_actuel+=1;
@@ -45,4 +46,9 @@ void AsservissementWorker::runWork () {
         sig_RobotMoved();
         usleep(2000);
     }
+}
+
+void AsservissementWorker::nouvelle_trajectoire() {
+    x_actuel = x_newTrajectoire;
+    y_actuel = y_newTrajectoire;
 }

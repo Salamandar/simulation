@@ -48,6 +48,5 @@ bool Simulation::on_plateau_click(GdkEventMotion* event) {
     int x =                 event->x*PLATEAU_SCALE;
     int y = PLATEAU_LARG -  event->y*PLATEAU_SCALE;
     set_trajectoire_xy_absolu(x, y);
-    plateau->setRobotPosition(x, y,0);
     return true;
 }

@@ -32,6 +32,7 @@ protected:
 
     // This is where the real work happens
     void runWork();
+    void nouvelle_trajectoire();
 
     Glib::Thread* thread;
 };
