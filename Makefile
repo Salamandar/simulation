@@ -32,7 +32,7 @@ LDFLAGS+=     `pkg-config gtkmm-3.0 gtksourceviewmm-3.0 --libs`
 all: $(BUILD_DIR)/$(EXEC)
 
 $(BUILD_DIR)/$(EXEC): $(OBJ) libHardware
-	@make -C $(ASSER_DIR) asser_robot
+	@make -C $(ASSER_DIR) asservissement
 	@echo "	++	$(PROJECT)|$(notdir $@)"
 	@$(++) $(CFLAGS) -o $@ $(OBJ) -lHardware $(LDFLAGS)
 
