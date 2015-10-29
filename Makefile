@@ -31,10 +31,9 @@ LDFLAGS+=     `pkg-config gtkmm-3.0 gtksourceviewmm-3.0 --libs`
 # Cibles du projet
 all: $(BUILD_DIR)/$(EXEC)
 
-$(BUILD_DIR)/$(EXEC): $(OBJ) libHardware
-	@make -C $(ASSER_DIR) asservissement
+$(BUILD_DIR)/$(EXEC): $(OBJ) libAsser libHardware libCommAsser libCarto
 	@echo "	++	$(PROJECT)|$(notdir $@)"
-	@$(++) $(CFLAGS) -o $@ $(OBJ) -lHardware $(LDFLAGS)
+	@$(++) $(CFLAGS) -o $@ $(OBJ) -lAsser -lCommAsser -lCarto -lHardware $(LDFLAGS)
 
 
 
