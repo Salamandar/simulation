@@ -34,10 +34,7 @@ void CartographieWorker::dessine_point_passage_carto(int x, int y, int type) {
 // This is where the real work happens
 void CartographieWorker::runWork() {
     std::cout << "This is the carto working thread !" << std::endl;
+    pathfinding_init();
+    pathfinding(500,1500,2500,1501);
 
-    this->dessine_obstacle_ligne(0,0,1000,1500);
-    this->dessine_obstacle_rond(1000,1500,300);
-
-    for (int i = 0; i < 20; ++i)
-        dessine_point_passage_carto(100*i,100*i,i%4);
 }

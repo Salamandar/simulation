@@ -3,6 +3,21 @@
 
 void new_trajectoire_xy_absolu(int x, int y);
 
+extern "C" {
+void init_odometrie();
+void init_trajectoire();
+void init_hardware();
+void init_asser();
+void start_asser();
+void set_trajectoire_xy_absolu(int x, int y);
+
+float float_get_x_actuel();
+float float_get_y_actuel();
+int   get_theta_actuel();
+
+}
+
+
 
 class AsservissementWorker {
 public:

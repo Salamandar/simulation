@@ -26,15 +26,26 @@ Simulation* get_simulation() {
 }
 
 
-void setRobotPositionFromAsservissement() {
+bool setRobotPositionFromAsservissement() {
     get_simulation()->plateau->setRobotPosition(
         m_AsservissementWorker->get_x(),
         m_AsservissementWorker->get_y(),
         m_AsservissementWorker->get_theta());
+    return true;
 }
 
 void new_trajectoire_xy_absolu(int x, int y){
     m_AsservissementWorker->new_trajectoire_xy_absolu(x,y);
+}
+
+void dessine_obstacle_rond(int cx, int cy, int r){
+    m_CartographieWorker->dessine_obstacle_rond(cx, cy, r);
+}
+void dessine_obstacle_ligne(int x1, int y1, int x2, int y2){
+    m_CartographieWorker->dessine_obstacle_ligne(x1, y1, x2, y2);
+}
+void dessine_point_passage_carto(int x, int y, int type) {
+    m_CartographieWorker->dessine_point_passage_carto(x, y, type);
 }
 
 
@@ -51,7 +62,8 @@ int main() {
     m_AsservissementWorker = new AsservissementWorker();
     m_CartographieWorker   = new CartographieWorker();
 
-    m_AsservissementWorker->sig_RobotMoved.connect(sigc::ptr_fun(&setRobotPositionFromAsservissement));
+    Glib::signal_timeout().connect( sigc::ptr_fun(&setRobotPositionFromAsservissement), 10);
+    //m_AsservissementWorker->sig_RobotMoved.connect(sigc::ptr_fun(&setRobotPositionFromAsservissement));
 
 
     m_AsservissementWorker->start();
