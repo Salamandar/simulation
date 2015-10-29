@@ -1,6 +1,7 @@
 #include "simulation.h"
 #include <iostream>
 #include "interfaces/asservissement.h"
+#include "interfaces/cartographie.h"
 
 int Simulation::init() {
     // Obtain gtk's global lock
@@ -57,5 +58,7 @@ bool Simulation::on_plateau_click(GdkEventButton* event) {
     int x =                 event->x*PLATEAU_SCALE;
     int y = PLATEAU_LARG -  event->y*PLATEAU_SCALE;
     new_trajectoire_xy_absolu(x, y);
+    plateau->cleanPassageCarto();
+    new_pathfinding(x,y);
     return true;
 }

@@ -159,3 +159,22 @@ void TableDrawingArea::addObstacleLine(int x1, int y1, int x2, int y2){
     contextObstacles->stroke();
     queue_draw();
 }
+
+
+void TableDrawingArea::cleanContext(Cairo::RefPtr<Cairo::Context> contexte){
+    contexte->save();
+    contexte->set_source_rgba(0,0,0,0);
+    contexte->set_operator(Cairo::OPERATOR_SOURCE);
+    contexte->paint();
+    contexte->restore();
+}
+
+void TableDrawingArea::cleanTrajectoire(){
+    cleanContext(contextTrajectoire);
+}
+void TableDrawingArea::cleanPassageCarto(){
+    cleanContext(contextCartographie);
+}
+void TableDrawingArea::cleanObstacles(){
+    cleanContext(contextObstacles);
+}

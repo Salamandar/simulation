@@ -29,12 +29,15 @@ public:
     virtual ~TableDrawingArea(){};
 
     // "Ask for drawing" functions
+    void cleanTrajectoire();
     void setRobotPosition(int real_x,int real_y, double alpha);
 
     // Cartographie
+    void cleanPassageCarto();
     void addPointPassageCarto(double x, double y, int type);
 
     // Obstacles
+    void cleanObstacles();
     void addObstacleRond(int cx, int cy, int r);
     void addObstacleLine(int x1, int y1, int x2, int y2);
 
@@ -45,6 +48,7 @@ public:
 protected:
     // Drawing functions
     virtual bool on_draw(const Cairo::RefPtr<Cairo::Context>& cr);
+    void cleanContext(Cairo::RefPtr<Cairo::Context> contexte);
 
     // Dessin de la table
     Cairo::RefPtr<Cairo::Surface> background;
