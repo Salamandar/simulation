@@ -1,6 +1,8 @@
 #ifndef CARTOGRAPHIE_H
 #define CARTOGRAPHIE_H
 
+void new_pathfinding(int x, int y);
+
 extern "C" {
 #include "../../cartographie/cartographie.h"
 
@@ -30,6 +32,8 @@ public:
     void dessine_obstacle_ligne(int x1, int y1, int x2, int y2);
     void dessine_point_passage_carto(int x, int y, int type);
 
+    void new_pathfinding(int x, int y);
+
 protected:
     int theta_actuel,
         x_actuel,
@@ -38,6 +42,7 @@ protected:
         y_newTrajectoire;
 
     // This is where the real work happens
+    void runWorkInit();
     void runWork();
 
     Glib::Thread* thread;

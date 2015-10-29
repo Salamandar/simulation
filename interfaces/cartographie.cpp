@@ -12,7 +12,7 @@ Simulation* get_simulation();
 
 // Called to start the processing on the thread
 void CartographieWorker::start() {
-        thread = Glib::Thread::create(sigc::mem_fun(*this, &CartographieWorker::runWork), true);
+        thread = Glib::Thread::create(sigc::mem_fun(*this, &CartographieWorker::runWorkInit), true);
 }
 
 CartographieWorker::~CartographieWorker() {
@@ -32,9 +32,17 @@ void CartographieWorker::dessine_point_passage_carto(int x, int y, int type) {
 
 
 // This is where the real work happens
+void CartographieWorker::runWorkInit() {
+    std::cout << "This is the carto init thread !" << std::endl;
+    pathfinding_init();
+}
 void CartographieWorker::runWork() {
     std::cout << "This is the carto working thread !" << std::endl;
-    pathfinding_init();
     pathfinding(500,1500,2500,1501);
+}
 
+void CartographieWorker::new_pathfinding(int x, int y){
+    pathfinding(x_actuel, y_actuel, x, y);
+    x_actuel = x;
+    y_actuel = y;
 }

@@ -47,6 +47,9 @@ void dessine_obstacle_ligne(int x1, int y1, int x2, int y2){
 void dessine_point_passage_carto(int x, int y, int type) {
     m_CartographieWorker->dessine_point_passage_carto(x, y, type);
 }
+void new_pathfinding(int x, int y) {
+    m_CartographieWorker->new_pathfinding(x, y);
+}
 
 
 
