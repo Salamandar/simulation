@@ -62,7 +62,7 @@ int main() {
     m_AsservissementWorker = new AsservissementWorker();
     m_CartographieWorker   = new CartographieWorker();
 
-    Glib::signal_timeout().connect( sigc::ptr_fun(&setRobotPositionFromAsservissement), 10);
+    Glib::signal_timeout().connect( sigc::ptr_fun(&setRobotPositionFromAsservissement), 40);
     //m_AsservissementWorker->sig_RobotMoved.connect(sigc::ptr_fun(&setRobotPositionFromAsservissement));
 
 
