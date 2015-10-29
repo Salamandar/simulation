@@ -18,16 +18,13 @@ AsservissementWorker::~AsservissementWorker() {
         thread->join(); // Here we block to truly wait for the thread to complete
 }
 
-int AsservissementWorker::get_theta_actuel(){
-    return theta_actuel;
+int AsservissementWorker::get_theta(){
 }
-int AsservissementWorker::get_x_actuel(){
-    return x_actuel;
+int AsservissementWorker::get_x(){
 }
-int AsservissementWorker::get_y_actuel(){
-    return y_actuel;
+int AsservissementWorker::get_y(){
 }
-void AsservissementWorker::set_trajectoire_xy_absolu(int x, int y){
+void AsservissementWorker::new_trajectoire_xy_absolu(int x, int y){
     std::cout << "Demande de nouvelle trajectoire " << x << " " << y << std::endl;
     x_newTrajectoire = x;
     y_newTrajectoire = y;

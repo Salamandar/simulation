@@ -28,13 +28,13 @@ Simulation* get_simulation() {
 
 void setRobotPositionFromAsservissement() {
     get_simulation()->plateau->setRobotPosition(
-        m_AsservissementWorker->get_x_actuel(),
-        m_AsservissementWorker->get_y_actuel(),
-        m_AsservissementWorker->get_theta_actuel());
+        m_AsservissementWorker->get_x(),
+        m_AsservissementWorker->get_y(),
+        m_AsservissementWorker->get_theta());
 }
 
-void set_trajectoire_xy_absolu(int x, int y){
-    m_AsservissementWorker->set_trajectoire_xy_absolu(x,y);
+void new_trajectoire_xy_absolu(int x, int y){
+    m_AsservissementWorker->new_trajectoire_xy_absolu(x,y);
 }
 
 

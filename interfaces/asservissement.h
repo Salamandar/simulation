@@ -1,7 +1,7 @@
 #ifndef ASSERVISSEMENT_H
 #define ASSERVISSEMENT_H
 
-void set_trajectoire_xy_absolu(int x, int y);
+void new_trajectoire_xy_absolu(int x, int y);
 
 
 class AsservissementWorker {
@@ -18,10 +18,10 @@ public:
     Glib::Dispatcher sig_RobotMoved,
                      sig_AskNewTrajectoire;
 
-    int get_theta_actuel();
-    int get_x_actuel();
-    int get_y_actuel();
-    void set_trajectoire_xy_absolu(int x, int y);
+    int get_theta();
+    int get_x();
+    int get_y();
+    void new_trajectoire_xy_absolu(int x, int y);
 
 protected:
     int theta_actuel,

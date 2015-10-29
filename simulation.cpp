@@ -50,12 +50,12 @@ int Simulation::start() {
 bool Simulation::on_plateau_movem(GdkEventMotion* event) {
     int x =                 event->x*PLATEAU_SCALE;
     int y = PLATEAU_LARG -  event->y*PLATEAU_SCALE;
-    set_trajectoire_xy_absolu(x, y);
+    new_trajectoire_xy_absolu(x, y);
     return true;
 }
 bool Simulation::on_plateau_click(GdkEventButton* event) {
     int x =                 event->x*PLATEAU_SCALE;
     int y = PLATEAU_LARG -  event->y*PLATEAU_SCALE;
-    set_trajectoire_xy_absolu(x, y);
+    new_trajectoire_xy_absolu(x, y);
     return true;
 }
