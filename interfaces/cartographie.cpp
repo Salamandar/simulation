@@ -8,11 +8,14 @@
 
 #include <iostream>
 
-Simulation* get_simulation();
-
 // Called to start the processing on the thread
 void CartographieWorker::start() {
-        thread = Glib::Thread::create(sigc::mem_fun(*this, &CartographieWorker::runWorkInit), true);
+    thread = Glib::Thread::create(sigc::mem_fun(*this, &CartographieWorker::runWorkInit), true);
+}
+void CartographieWorker::new_pathfinding(int x, int y) {
+    x_newTrajectoire = x;
+    y_newTrajectoire = y;
+    thread = Glib::Thread::create(sigc::mem_fun(*this, &CartographieWorker::runWork), true);
 }
 
 CartographieWorker::~CartographieWorker() {
@@ -21,13 +24,13 @@ CartographieWorker::~CartographieWorker() {
 }
 
 void CartographieWorker::dessine_obstacle_rond(int cx, int cy, int r){
-    get_simulation()->plateau->addObstacleRond(cx, cy, r);
+    m_Simulation->plateau->addObstacleRond(cx, cy, r);
 }
 void CartographieWorker::dessine_obstacle_ligne(int x1, int y1, int x2, int y2){
-    get_simulation()->plateau->addObstacleLine(x1, y1, x2, y2);
+    m_Simulation->plateau->addObstacleLine(x1, y1, x2, y2);
 }
 void CartographieWorker::dessine_point_passage_carto(int x, int y, int type) {
-    get_simulation()->plateau->addPointPassageCarto(x, y, type);
+    m_Simulation->plateau->addPointPassageCarto(x, y, type);
 }
 
 
@@ -37,12 +40,9 @@ void CartographieWorker::runWorkInit() {
     pathfinding_init();
 }
 void CartographieWorker::runWork() {
-    std::cout << "This is the carto working thread !" << std::endl;
-    pathfinding(500,1500,2500,1501);
-}
-
-void CartographieWorker::new_pathfinding(int x, int y){
-    pathfinding(x_actuel, y_actuel, x, y);
-    x_actuel = x;
-    y_actuel = y;
+    int status = pathfinding(x_actuel, y_actuel, x_newTrajectoire, y_newTrajectoire);
+    if (status) {
+        x_actuel = x_newTrajectoire;
+        y_actuel = y_newTrajectoire;
+    }
 }

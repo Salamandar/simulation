@@ -44,6 +44,12 @@ int Simulation::init() {
 
 int Simulation::start() {
     std::cout << "This is the UI thread !" << std::endl;
+
+    m_AsservissementWorker->start();
+    m_CartographieWorker  ->start();
+    Glib::signal_timeout().connect(
+        sigc::mem_fun(*this, &Simulation::setRobotPositionFromAsservissement),
+        40);
     return m_Application->run(*m_Window);
 }
 
@@ -51,14 +57,26 @@ int Simulation::start() {
 bool Simulation::on_plateau_movem(GdkEventMotion* event) {
     int x =                 event->x*PLATEAU_SCALE;
     int y = PLATEAU_LARG -  event->y*PLATEAU_SCALE;
-    new_trajectoire_xy_absolu(x, y);
+    m_AsservissementWorker->x_newTrajectoire = x;
+    m_AsservissementWorker->y_newTrajectoire = y;
+    m_AsservissementWorker->sig_AskNewTrajectoire.emit();
     return true;
 }
 bool Simulation::on_plateau_click(GdkEventButton* event) {
     int x =                 event->x*PLATEAU_SCALE;
     int y = PLATEAU_LARG -  event->y*PLATEAU_SCALE;
-    new_trajectoire_xy_absolu(x, y);
+    m_AsservissementWorker->x_newTrajectoire = x;
+    m_AsservissementWorker->y_newTrajectoire = y;
+    m_AsservissementWorker->sig_AskNewTrajectoire.emit();
     plateau->cleanPassageCarto();
-    new_pathfinding(x,y);
+    m_CartographieWorker->new_pathfinding(x,y);
+    return true;
+}
+
+bool Simulation::setRobotPositionFromAsservissement() {
+    plateau->setRobotPosition(
+        m_AsservissementWorker->get_x(),
+        m_AsservissementWorker->get_y(),
+        m_AsservissementWorker->get_theta());
     return true;
 }

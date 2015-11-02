@@ -1,17 +1,13 @@
 #ifndef CARTOGRAPHIE_H
 #define CARTOGRAPHIE_H
 
-void new_pathfinding(int x, int y);
-
 extern "C" {
 #include "../../cartographie/cartographie.h"
 
-void dessine_obstacle_rond(int cx, int cy, int r);
-void dessine_obstacle_ligne(int x1, int y1, int x2, int y2);
-void dessine_point_passage_carto(int x, int y, int type);
-
 }
 
+
+class Simulation;
 
 class CartographieWorker {
 public:
@@ -20,6 +16,10 @@ public:
 
     // Called to start the processing on the thread
     void start();
+
+    void setSimulation(Simulation* simulation){
+        m_Simulation = simulation;
+    }
 
     // When shutting down, we need to stop the thread
     ~CartographieWorker();
@@ -40,6 +40,8 @@ protected:
         y_actuel,
         x_newTrajectoire,
         y_newTrajectoire;
+
+    Simulation* m_Simulation;
 
     // This is where the real work happens
     void runWorkInit();

@@ -1,8 +1,6 @@
 #ifndef ASSERVISSEMENT_H
 #define ASSERVISSEMENT_H
 
-void new_trajectoire_xy_absolu(int x, int y);
-
 extern "C" {
 void init_odometrie();
 void init_trajectoire();
@@ -16,38 +14,45 @@ float float_get_y_actuel();
 int   get_theta_actuel();
 
 }
+#include "../simulation.h"
 
-
+class Simulation;
 
 class AsservissementWorker {
 public:
 
-    AsservissementWorker() : thread(0) {}
+    AsservissementWorker()
+    : sig_AskNewTrajectoire(),
+      thread(0)
+    {}
 
     // Called to start the processing on the thread
     void start();
+    void setSimulation(Simulation* simulation){
+        m_Simulation = simulation;
+    }
 
     // When shutting down, we need to stop the thread
     ~AsservissementWorker();
 
-    Glib::Dispatcher sig_RobotMoved,
-                     sig_AskNewTrajectoire;
+    Glib::Dispatcher sig_AskNewTrajectoire;
 
     int get_theta();
     int get_x();
     int get_y();
-    void new_trajectoire_xy_absolu(int x, int y);
+    void asser_set_trajectoire_xy_absolu();
 
-protected:
+
     int theta_actuel,
         x_actuel,
         y_actuel,
         x_newTrajectoire,
         y_newTrajectoire;
 
+    Simulation* m_Simulation;
+
     // This is where the real work happens
     void runWork();
-    void nouvelle_trajectoire();
 
     Glib::Thread* thread;
 };

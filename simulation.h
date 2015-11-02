@@ -10,6 +10,9 @@
 #include "communication_view.h"
 #include "plateau.h"
 
+#include "interfaces/asservissement.h"
+#include "interfaces/cartographie.h"
+
 #define SIMULATION_UI_FILE "Window.glade"
 
 int init_simulation();
@@ -21,13 +24,19 @@ class Simulation {
 public:
     Simulation() :
         m_Window(0),
-        m_Dispatcher(),
+        sig_RobotMoved(),
         m_UiThread(0){};
     int init();
     int start();
 
-    // Called from the worker thread.
-    void notify();
+    void setAsservissementWorker(AsservissementWorker* asservissementWorker) {
+        m_AsservissementWorker = asservissementWorker;
+        m_AsservissementWorker->setSimulation(this);
+    }
+    void setCartographieWorker(CartographieWorker* cartographieWorker) {
+        m_CartographieWorker = cartographieWorker;
+        m_CartographieWorker->setSimulation(this);
+    }
 
     CommunicationView m_communicationView;
 
@@ -36,6 +45,8 @@ public:
 
     Gsv::View *UART_view;
     Glib::RefPtr<Gtk::TextBuffer> UART_tbuffer;
+    bool setRobotPositionFromAsservissement();
+
 
 protected:
 
@@ -46,8 +57,10 @@ protected:
     bool on_plateau_movem(GdkEventMotion*);
     bool on_plateau_click(GdkEventButton*);
 
+    AsservissementWorker*   m_AsservissementWorker;
+    CartographieWorker*     m_CartographieWorker;
 
-    Glib::Dispatcher m_Dispatcher;
+    Glib::Dispatcher sig_RobotMoved;
     Glib::Threads::Thread* m_UiThread;
 };
 

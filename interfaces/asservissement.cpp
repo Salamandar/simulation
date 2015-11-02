@@ -1,11 +1,9 @@
 
-#include "simulation.h"
+#include "../simulation.h"
 #include "UART.h"
 #include "asservissement.h"
 #include "hardware.h"
 #include <iostream>
-
-Simulation* get_simulation();
 
 
 // Called to start the processing on the thread
@@ -27,18 +25,15 @@ int AsservissementWorker::get_x(){
 int AsservissementWorker::get_y(){
     return float_get_y_actuel();
 }
-void AsservissementWorker::new_trajectoire_xy_absolu(int x, int y){
-    std::cout << "Demande de nouvelle trajectoire " << x << " " << y << std::endl;
-    x_newTrajectoire = x;
-    y_newTrajectoire = y;
-    sig_AskNewTrajectoire();
-    set_trajectoire_xy_absolu(x, y);
+void AsservissementWorker::asser_set_trajectoire_xy_absolu(){
+    set_trajectoire_xy_absolu(x_newTrajectoire, y_newTrajectoire);
 }
 
 // This is where the real work happens
 void AsservissementWorker::runWork () {
     std::cout << "This is the asser working thread !" << std::endl;
-    //this->sig_AskNewTrajectoire.connect(sigc::mem_fun(*this, &AsservissementWorker::nouvelle_trajectoire));
+    sig_AskNewTrajectoire.connect(sigc::mem_fun(*this,
+        &AsservissementWorker::asser_set_trajectoire_xy_absolu));
 
     //init
     init_odometrie();
@@ -49,9 +44,4 @@ void AsservissementWorker::runWork () {
     //lancement du robot
     //launch_tests();
     start_asser();
-}
-
-void AsservissementWorker::nouvelle_trajectoire() {
-    x_actuel = x_newTrajectoire;
-    y_actuel = y_newTrajectoire;
 }
