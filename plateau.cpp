@@ -85,10 +85,13 @@ void TableDrawingArea::addPointPassageCarto(double x, double y, int type){
         case 1: // Point visité
             contextCartographie->set_source_rgba(0.0,0.0,0.5,1.0);
             break;
-        case 2: // Point de passage réel
+        case 2: // Point de passage astar
+            contextCartographie->set_source_rgba(0.0,0.5,0.0,1.0);
+            break;
+        case 3: // Point de passage thetastar (réel)
             contextCartographie->set_source_rgba(0.0,1.0,0.0,1.0);
             break;
-        case 3: // Point borne
+        case 4: // Point borne
             contextCartographie->set_source_rgba(1.0,1.0,1.0,1.0);
             break;
         default:
