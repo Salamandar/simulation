@@ -26,7 +26,7 @@ private:
 
     Gtk::ScrolledWindow *m_sourceScrolledWindow;
 
-    void on_insert(const Gtk::TextBuffer::iterator& pos, const Glib::ustring& text, int bytes);
+    void on_insert();
 };
 
 #endif

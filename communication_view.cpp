@@ -14,13 +14,11 @@ void append_to_UART(unsigned char c);
 
 void CommunicationView::init(Glib::RefPtr<Gtk::Builder> builder) {
     builder->get_widget("CommunicationSourceView", m_sourceView);
+    builder->get_widget("CommunicationEntry", m_Entry);
     m_sourceBuffer  = m_sourceView->get_source_buffer();
     m_tagTable      = m_sourceBuffer->get_tag_table();
-    m_sourceBuffer->signal_insert().connect(
+    m_Entry->signal_activate().connect(
         sigc::mem_fun(*this, &CommunicationView::on_insert));
-
-    builder->get_widget("CommunicationEntry", m_Entry);
-    m_entryBuffer  = m_Entry->get_buffer();
 }
 
 void CommunicationView::clear() {
@@ -39,7 +37,11 @@ void CommunicationView::append_received_line(std::string ligne) {
     //m_sourceView->scroll_to(m_sourceBuffer->get_insert());
 }
 
-void CommunicationView::on_insert(const Gtk::TextBuffer::iterator& pos, const Glib::ustring& text, int bytes) {
-    std::cout<< text.data()[0] <<std::flush;
-    append_to_UART(text.data()[0]);
+void CommunicationView::on_insert() {
+    std::string texte = m_Entry->get_text().raw();
+    for(char& c : texte)
+        append_to_UART(c);
+    append_to_UART('\n');
+
+    append_received_line(texte);
 }
