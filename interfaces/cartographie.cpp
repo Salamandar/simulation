@@ -41,8 +41,8 @@ void CartographieWorker::runWorkInit() {
 }
 void CartographieWorker::runWork() {
     int status = pathfinding(x_actuel, y_actuel, x_newTrajectoire, y_newTrajectoire);
-    if (status) {
+    //if (status) {
         x_actuel = x_newTrajectoire;
         y_actuel = y_newTrajectoire;
-    }
+    //}
 }
