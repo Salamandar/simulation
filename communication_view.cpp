@@ -66,7 +66,7 @@ void CommunicationView::append_received_line(std::string ligne) {
         m_sourceBuffer->get_iter_at_offset(-1),
         ligne);
     m_sourceBuffer->place_cursor(m_sourceBuffer->get_iter_at_offset(-1));
-    //m_sourceView->scroll_to(m_sourceBuffer->get_insert());
+    m_sourceView->scroll_to(m_sourceBuffer->get_insert());
 }
 
 void CommunicationView::on_insert() {
