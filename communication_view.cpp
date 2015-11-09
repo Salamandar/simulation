@@ -18,6 +18,9 @@ void CommunicationView::init(Glib::RefPtr<Gtk::Builder> builder) {
     m_tagTable      = m_sourceBuffer->get_tag_table();
     m_sourceBuffer->signal_insert().connect(
         sigc::mem_fun(*this, &CommunicationView::on_insert));
+
+    builder->get_widget("CommunicationEntry", m_Entry);
+    m_entryBuffer  = m_Entry->get_buffer();
 }
 
 void CommunicationView::clear() {

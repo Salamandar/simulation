@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.18.3 -->
+<!-- Generated with glade 3.19.0 -->
 <interface>
   <requires lib="gtk+" version="3.12"/>
   <requires lib="gtksourceview" version="3.0"/>
@@ -17,24 +17,54 @@
             <property name="label_xalign">0</property>
             <property name="shadow_type">none</property>
             <child>
-              <object class="GtkScrolledWindow" id="CommunicationScrolled">
-                <property name="width_request">400</property>
+              <object class="GtkBox" id="box2">
                 <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="shadow_type">out</property>
+                <property name="can_focus">False</property>
+                <property name="orientation">vertical</property>
                 <child>
-                  <object class="GtkSourceView" id="CommunicationSourceView">
+                  <object class="GtkScrolledWindow" id="CommunicationScrolled">
+                    <property name="width_request">400</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="shadow_type">out</property>
+                    <child>
+                      <object class="GtkSourceView" id="CommunicationSourceView">
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="hexpand">True</property>
+                        <property name="hscroll_policy">natural</property>
+                        <property name="vscroll_policy">natural</property>
+                        <property name="editable">False</property>
+                        <property name="monospace">True</property>
+                        <property name="show_line_numbers">True</property>
+                        <property name="tab_width">4</property>
+                        <property name="indent_on_tab">False</property>
+                        <property name="background_pattern">grid</property>
+                      </object>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="expand">True</property>
+                    <property name="fill">True</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkEntry" id="CommunicationEntry">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
-                    <property name="hexpand">True</property>
-                    <property name="hscroll_policy">natural</property>
-                    <property name="vscroll_policy">natural</property>
-                    <property name="monospace">True</property>
-                    <property name="show_line_numbers">True</property>
-                    <property name="tab_width">4</property>
-                    <property name="indent_on_tab">False</property>
-                    <property name="background_pattern">grid</property>
+                    <property name="has_focus">True</property>
+                    <property name="has_frame">False</property>
+                    <property name="shadow_type">etched-out</property>
+                    <property name="progress_pulse_step">0</property>
+                    <property name="primary_icon_stock">gtk-network</property>
+                    <property name="placeholder_text" translatable="yes">Envoi UART</property>
                   </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">1</property>
+                  </packing>
                 </child>
               </object>
             </child>

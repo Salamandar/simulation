@@ -21,6 +21,9 @@ private:
     Glib::RefPtr<Gsv::Buffer>   m_sourceBuffer;
     Glib::RefPtr<Gsv::Buffer::TagTable> m_tagTable;
 
+    Gtk::Entry*                 m_Entry;
+    Glib::RefPtr<Gtk::EntryBuffer>  m_entryBuffer;
+
     Gtk::ScrolledWindow *m_sourceScrolledWindow;
 
     void on_insert(const Gtk::TextBuffer::iterator& pos, const Glib::ustring& text, int bytes);
