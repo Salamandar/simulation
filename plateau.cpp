@@ -100,7 +100,7 @@ void TableDrawingArea::addPointPassageCarto(double x, double y, int type){
 
     contextCartographie->fill();
 
-    queue_draw();
+    //queue_draw();
 }
 
 void TableDrawingArea::drawPointsPassageCartoOnTable(const Cairo::RefPtr<Cairo::Context>& cr){
@@ -151,7 +151,7 @@ void TableDrawingArea::addObstacleRond(int cx, int cy, int r){
     contextObstacles->stroke_preserve();
     contextObstacles->set_source_rgba(1,0,0,0.5);
     contextObstacles->fill();
-    queue_draw();
+    //queue_draw();
 }
 void TableDrawingArea::addObstacleLine(int x1, int y1, int x2, int y2){
     contextObstacles->set_source_rgba(1,0,0,0.5);
@@ -160,7 +160,7 @@ void TableDrawingArea::addObstacleLine(int x1, int y1, int x2, int y2){
     contextObstacles->line_to(x2 /PLATEAU_SCALE,
               (PLATEAU_LARG - y2)/PLATEAU_SCALE);
     contextObstacles->stroke();
-    queue_draw();
+    //queue_draw();
 }
 
 
