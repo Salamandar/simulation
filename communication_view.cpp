@@ -1,6 +1,9 @@
 #include "communication_view.h"
 #include <iostream>
 
+#include "../common_code/communication/s2a.h"
+extern char *s2a_keys[S2A_SIZE];
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -19,7 +22,36 @@ void CommunicationView::init(Glib::RefPtr<Gtk::Builder> builder) {
     m_tagTable      = m_sourceBuffer->get_tag_table();
     m_Entry->signal_activate().connect(
         sigc::mem_fun(*this, &CommunicationView::on_insert));
+
+    // Tout ça pour la complétion
+    Glib::RefPtr<Gtk::EntryCompletion>
+        completion = Gtk::EntryCompletion::create();
+    Glib::RefPtr<Gtk::ListStore>
+        refCompletionModel = Gtk::ListStore::create(m_Columns);
+
+    m_Entry->set_completion(completion);
+    completion->set_inline_completion(true);
+    completion->set_inline_selection(true);
+    completion->set_minimum_key_length(0);
+    completion->set_model(refCompletionModel);
+
+    Gtk::TreeModel::Row row = *(refCompletionModel->append());
+    for (int i = 0; i <= S2A_FCT_MAX_INDEX; ++i) {
+        row[m_Columns.m_col_id]   = i;
+        row[m_Columns.m_col_name] = s2a_keys[i];
+        row = *(refCompletionModel->append());
+    }
+
+    completion->set_text_column(m_Columns.m_col_name);
+    for(type_actions_map::iterator iter = m_CompletionActions.begin();
+        iter != m_CompletionActions.end();
+        ++iter) {
+        int position = iter->first;
+        Glib::ustring title = iter->second;
+        completion->insert_action_text(title, position);
+    }
 }
+
 
 void CommunicationView::clear() {
     m_sourceBuffer->set_text("");
