@@ -23,6 +23,9 @@ void CommunicationView::init(Glib::RefPtr<Gtk::Builder> builder) {
     m_Entry->signal_activate().connect(
         sigc::mem_fun(*this, &CommunicationView::on_insert));
 
+    sig_NewMessageUART.connect(sigc::mem_fun(*this,
+        &CommunicationView::print_UART_buffer));
+
     // Tout ça pour la complétion
     Glib::RefPtr<Gtk::EntryCompletion>
         completion = Gtk::EntryCompletion::create();
@@ -41,32 +44,35 @@ void CommunicationView::init(Glib::RefPtr<Gtk::Builder> builder) {
         row[m_Columns.m_col_name] = s2a_keys[i];
         row = *(refCompletionModel->append());
     }
-
     completion->set_text_column(m_Columns.m_col_name);
-    for(type_actions_map::iterator iter = m_CompletionActions.begin();
-        iter != m_CompletionActions.end();
-        ++iter) {
-        int position = iter->first;
-        Glib::ustring title = iter->second;
-        completion->insert_action_text(title, position);
-    }
 }
 
 
 void CommunicationView::clear() {
     m_sourceBuffer->set_text("");
 }
-
-void CommunicationView::append_received_line(std::string ligne) {
-    if (ligne.back() != '\n')
-        ligne.append("\n");
-
+void CommunicationView::print_UART_buffer() {
+    bufferUART_mutex.lock();
+    if (bufferUART.back() != '\n')
+        bufferUART.append("\n");
 
     m_sourceBuffer->insert(
         m_sourceBuffer->get_iter_at_offset(-1),
-        ligne);
+        bufferUART);
+    bufferUART.clear();
+    bufferUART_mutex.unlock();
     m_sourceBuffer->place_cursor(m_sourceBuffer->get_iter_at_offset(-1));
     m_sourceView->scroll_to(m_sourceBuffer->get_insert());
+}
+
+
+void CommunicationView::append_received_line(std::string ligne) {
+    bufferUART_mutex.lock();
+
+    bufferUART+=ligne;
+    sig_NewMessageUART.emit();
+
+    bufferUART_mutex.unlock();
 }
 
 void CommunicationView::on_insert() {

@@ -25,7 +25,6 @@ extern "C" {
     }
     void UART_send_message(char *msg, unsigned int nb_char) {
         m_Simulation->m_communicationView.append_received_line(msg);
-
     }
 }
 
