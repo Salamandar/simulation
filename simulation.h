@@ -1,15 +1,10 @@
 #ifndef SIMULATION_H
 #define SIMULATION_H
 
-#include <gtkmm/application.h>
-#include <gtkmm/builder.h>
-#include <gtkmm/window.h>
-#include <gtkmm/textbuffer.h>
-#include <gtkmm/eventbox.h>
+#include <gtkmm.h>
 #include <gtksourceviewmm.h>
 #include "communication_view.h"
 #include "plateau.h"
-
 #include "interfaces/asservissement.h"
 #include "interfaces/cartographie.h"
 

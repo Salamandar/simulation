@@ -1,5 +1,6 @@
 #ifndef CARTOGRAPHIE_H
 #define CARTOGRAPHIE_H
+#include <gtkmm.h>
 
 extern "C" {
 #include "../../cartographie/cartographie.h"

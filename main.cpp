@@ -1,13 +1,10 @@
 #include <stdio.h>
-#include <pthread.h>
+#include <iostream>
 
 #include "simulation.h"
-#include "UART.h"
 #include "interfaces/asservissement.h"
 #include "interfaces/cartographie.h"
-#include "hardware.h"
 
-#include <iostream>
 Simulation* m_Simulation = 0;
 AsservissementWorker* m_AsservissementWorker = 0;
 CartographieWorker* m_CartographieWorker = 0;

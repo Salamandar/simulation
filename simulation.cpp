@@ -1,7 +1,5 @@
-#include "simulation.h"
 #include <iostream>
-#include "interfaces/asservissement.h"
-#include "interfaces/cartographie.h"
+#include "simulation.h"
 
 int Simulation::init() {
     // Obtain gtk's global lock

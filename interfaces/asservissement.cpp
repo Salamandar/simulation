@@ -1,9 +1,5 @@
-
-#include "../simulation.h"
-#include "UART.h"
-#include "asservissement.h"
-#include "hardware.h"
 #include <iostream>
+#include "asservissement.h"
 
 
 // Called to start the processing on the thread

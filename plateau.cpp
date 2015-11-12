@@ -1,5 +1,5 @@
-#include "plateau.h"
 #include <iostream>
+#include "plateau.h"
 
 TableDrawingArea::TableDrawingArea(BaseObjectType* cobject,
     const Glib::RefPtr<Gtk::Builder>&)

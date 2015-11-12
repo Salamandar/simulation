@@ -1,18 +1,13 @@
-#include "communication_view.h"
 #include <iostream>
+#include "communication_view.h"
 
+// Autocomplétion
 #include "../common_code/communication/s2a.h"
 extern char *s2a_keys[S2A_SIZE];
 
-#ifdef __cplusplus
 extern "C" {
-#endif
-
-void append_to_UART(unsigned char c);
-
-#ifdef __cplusplus
+    void append_to_UART(unsigned char c);
 }
-#endif
 
 
 void CommunicationView::init(Glib::RefPtr<Gtk::Builder> builder) {

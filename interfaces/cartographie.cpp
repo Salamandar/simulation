@@ -1,12 +1,7 @@
-#include <stdio.h>
-#include <pthread.h>
+#include <iostream>
+#include "cartographie.h"
 
 #include "simulation.h"
-#include "UART.h"
-#include "cartographie.h"
-#include "hardware.h"
-
-#include <iostream>
 
 // Called to start the processing on the thread
 void CartographieWorker::start() {

@@ -1,5 +1,6 @@
 #ifndef ASSERVISSEMENT_H
 #define ASSERVISSEMENT_H
+#include <gtkmm.h>
 
 extern "C" {
 void init_odometrie();
@@ -14,7 +15,7 @@ float float_get_y_actuel();
 int   get_theta_actuel();
 
 }
-#include "../simulation.h"
+
 
 class Simulation;
 

@@ -2,7 +2,6 @@
 #define COMMUNICATION_VIEW_H
 #include <gtkmm.h>
 #include <gtksourceviewmm.h>
-#include <string.h>
 #include <mutex>
 
 class CommunicationView {
