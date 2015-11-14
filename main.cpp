@@ -5,6 +5,21 @@
 #include "interfaces/asservissement.h"
 #include "interfaces/cartographie.h"
 
+#include "interfaces/communication.h"
+
+/*
+ TODO :
+ * Leds de débug pour stm32
+ * "Parsing" de la réponse de la carto pour l'envoyer à l'asser
+
+ Plus long terme :
+ * Sockets
+ * Communication USB Série
+ * Servo
+ * soft carte alim :P
+ */
+
+
 Simulation* m_Simulation = 0;
 AsservissementWorker* m_AsservissementWorker = 0;
 CartographieWorker* m_CartographieWorker = 0;
@@ -39,6 +54,15 @@ int main() {
 
     m_Simulation->setAsservissementWorker(m_AsservissementWorker);
     m_Simulation->setCartographieWorker(m_CartographieWorker);
+
+
+    // Just a test for the serial port detection
+    vector<string> l =SerialComm::list_open_ports();
+    vector<string>::iterator it = l.begin();
+    while (it != l.end()) {
+        cout << *it << endl;
+        it++;
+    }
 
     m_Simulation->start();
 
