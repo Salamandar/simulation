@@ -45,4 +45,4 @@ $(BUILD_DIR)/%.o: %.cpp | $(BUILD_DIR)
 
 $(BUILD_DIR):
 	@mkdir -p $(BUILD_DIR)/interfaces/
-
+	@mkdir -p $(BUILD_DIR)/libserial/

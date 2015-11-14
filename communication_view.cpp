@@ -5,12 +5,25 @@
 #include "../common_code/communication/s2a.h"
 extern char *s2a_keys[S2A_SIZE];
 
+// Ports Série
+#include "interfaces/communication.h"
+
 extern "C" {
     void append_to_UART(unsigned char c);
 }
 
 
 void CommunicationView::init(Glib::RefPtr<Gtk::Builder> builder) {
+    Gtk::Button* button;
+    builder->get_widget("SerialRefreshButton", button);
+    button->signal_clicked().connect(sigc::mem_fun(*this,
+        &CommunicationView::refreshSerialPorts));
+    builder->get_widget("SerialConnectButton", button);
+    button->signal_clicked().connect(sigc::mem_fun(*this,
+        &CommunicationView::onConnectPort));
+    builder->get_widget("SerialPortsList", serialPortsList);
+
+
     builder->get_widget("CommunicationSourceView", m_sourceView);
     builder->get_widget("CommunicationEntry", m_Entry);
     m_sourceBuffer  = m_sourceView->get_source_buffer();
@@ -43,9 +56,10 @@ void CommunicationView::init(Glib::RefPtr<Gtk::Builder> builder) {
 }
 
 
-void CommunicationView::clear() {
+void CommunicationView::clear_view() {
     m_sourceBuffer->set_text("");
 }
+
 void CommunicationView::print_UART_buffer() {
     bufferUART_mutex.lock();
     if (bufferUART.back() != '\n')
@@ -61,7 +75,7 @@ void CommunicationView::print_UART_buffer() {
 }
 
 
-void CommunicationView::append_received_line(std::string ligne) {
+void CommunicationView::receive_string(std::string ligne) {
     bufferUART_mutex.lock();
 
     bufferUART+=ligne;
@@ -76,5 +90,18 @@ void CommunicationView::on_insert() {
         append_to_UART(c);
     append_to_UART('\n');
 
-    append_received_line(texte);
+    receive_string(texte);
+}
+
+void CommunicationView::refreshSerialPorts() {
+    vector<string> l =SerialComm::list_open_ports();
+    vector<string>::iterator it = l.begin();
+    serialPortsList->remove_all();
+    while (it != l.end()) {
+        serialPortsList->append(*it);
+        it++;
+    }
+}
+void CommunicationView::onConnectPort() {
+
 }

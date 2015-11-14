@@ -36,7 +36,7 @@ extern "C" {
         m_CartographieWorker->dessine_point_passage_carto(x, y, type);
     }
     void UART_send_message(char *msg, unsigned int nb_char) {
-        m_Simulation->m_communicationView.append_received_line(msg);
+        m_Simulation->m_communicationView.receive_string(msg);
     }
 }
 
@@ -55,14 +55,6 @@ int main() {
     m_Simulation->setAsservissementWorker(m_AsservissementWorker);
     m_Simulation->setCartographieWorker(m_CartographieWorker);
 
-
-    // Just a test for the serial port detection
-    vector<string> l =SerialComm::list_open_ports();
-    vector<string>::iterator it = l.begin();
-    while (it != l.end()) {
-        cout << *it << endl;
-        it++;
-    }
 
     m_Simulation->start();
 

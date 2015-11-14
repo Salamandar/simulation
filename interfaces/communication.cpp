@@ -7,7 +7,11 @@
 #include <sys/stat.h>
 #include <unistd.h>
 
-#include "serialcomm.h"
+#include "communication.h"
+
+extern "C" {
+    void append_to_UART(unsigned char c);
+}
 
 using namespace std;
 
@@ -49,6 +53,7 @@ void SerialComm::register_comport(const string& dir) {
 }
 
 vector<string> SerialComm::list_open_ports() {
+    open_ports.clear();
     int n;
     struct dirent **namelist;
     const char* sysdir = "/sys/class/tty/";
@@ -75,4 +80,19 @@ vector<string> SerialComm::list_open_ports() {
 
     // Return the lsit of detected comports
     return open_ports;
+}
+
+
+
+void SerialComm::send_to_UART(){
+
+}
+void SerialComm::send_to_socket(){
+
+}
+void SerialComm::send_to_fakeUART(){
+    for(char& c : to_send)
+        append_to_UART(c);
+    append_to_UART('\n');
+    to_send.clear();
 }

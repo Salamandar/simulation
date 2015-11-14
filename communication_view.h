@@ -13,37 +13,45 @@ public:
 
     void init(Glib::RefPtr<Gtk::Builder> builder);
 
-    void clear();
+    // Send a string to UART/other
+    void send_string(std::string);
 
-    // Adds to the buffer
-    void append_received_line(std::string);
+    // Receives a string from UART/other (reads bufferUART)
+    void receive_string(std::string);
+
+    // Clears the text view
+    void clear_view();
+
 
 private:
     Gsv::View*                  m_sourceView;
     Glib::RefPtr<Gsv::Buffer>   m_sourceBuffer;
     Glib::RefPtr<Gsv::Buffer::TagTable> m_tagTable;
 
-
+    // String reception
     void print_UART_buffer();
     std::mutex  bufferUART_mutex;
     std::string bufferUART;
     Glib::Dispatcher sig_NewMessageUART;
 
-
-    Gtk::Entry*                     m_Entry;
-    Glib::RefPtr<Gtk::EntryBuffer>  m_entryBuffer;
+    // String send
+    Gtk::Entry* m_Entry;
 
     class ModelColumns : public Gtk::TreeModel::ColumnRecord {
     public:
         ModelColumns() { add(m_col_id); add(m_col_name); }
-        Gtk::TreeModelColumn<unsigned int> m_col_id;
+        Gtk::TreeModelColumn<unsigned int>  m_col_id;
         Gtk::TreeModelColumn<Glib::ustring> m_col_name;
     };
     ModelColumns m_Columns;
-    typedef std::map<int, Glib::ustring> type_actions_map;
-    type_actions_map m_CompletionActions;
 
     void on_insert();
+
+    // Serial port connection
+    void refreshSerialPorts();
+    void onConnectPort();
+    Gtk::ComboBoxText* serialPortsList;
+
 };
 
 #endif
