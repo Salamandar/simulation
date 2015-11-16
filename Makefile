@@ -24,7 +24,8 @@ HDR     = $(shell find . -name "*.h")
 OBJ     = $(addprefix $(BUILD_DIR)/, $(SRC:%.cpp=%.o) )
 
 #Librairies
-CFLAGS += -I. `pkg-config gtkmm-3.0 gtksourceviewmm-3.0 --cflags` -Wno-deprecated
+CFLAGS += -I. `pkg-config gtkmm-3.0 gtksourceviewmm-3.0 --cflags` \
+	-Wno-deprecated -Wno-ignored-qualifiers
 LDFLAGS+=     `pkg-config gtkmm-3.0 gtksourceviewmm-3.0 --libs`
 
 ################################################################################
