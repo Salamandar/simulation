@@ -5,14 +5,6 @@
 #include "../common_code/communication/s2a.h"
 extern char *s2a_keys[S2A_SIZE];
 
-// Ports Série
-#include "interfaces/communication.h"
-
-extern "C" {
-    void append_to_UART(unsigned char c);
-}
-
-
 void CommunicationView::init(Glib::RefPtr<Gtk::Builder> builder) {
     Gtk::Button* button;
     builder->get_widget("SerialRefreshButton", button);
@@ -85,12 +77,8 @@ void CommunicationView::receive_string(std::string ligne) {
 }
 
 void CommunicationView::on_insert() {
-    std::string texte = m_Entry->get_text().raw();
-    for(char& c : texte)
-        append_to_UART(c);
-    append_to_UART('\n');
-
-    receive_string(texte+'\n');
+    communicator.send(m_Entry->get_text().raw());
+    receive_string   (m_Entry->get_text().raw()+"\n");
 }
 
 void CommunicationView::refreshSerialPorts() {
@@ -104,5 +92,5 @@ void CommunicationView::refreshSerialPorts() {
     serialPortsList->set_active(0);
 }
 void CommunicationView::onConnectPort() {
-
+    communicator.connect(serialPortsList->get_active_text());
 }

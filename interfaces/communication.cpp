@@ -7,13 +7,18 @@
 #include <sys/stat.h>
 #include <unistd.h>
 
+#include <iostream>
+
 #include "communication.h"
+
+#include "../communication_view.h"
 
 extern "C" {
     void append_to_UART(unsigned char c);
 }
 
 using namespace std;
+using namespace LibSerial;
 
 vector<string> SerialComm::open_ports;
 
@@ -82,17 +87,108 @@ vector<string> SerialComm::list_open_ports() {
     return open_ports;
 }
 
+int SerialComm::connect(string port) {
+    if (serial_port.IsOpen())
+        serial_port.Close();
 
 
-void SerialComm::send_to_UART(){
+    serial_port.Open(port);
+    if (!serial_port.good()) {
+        std::cerr << "Error: Could not open serial port " << port << std::endl;
+        return -1;
+    }
+
+    // Set the baud rate of the serial port.
+    serial_port.SetBaudRate(SerialStreamBuf::BAUD_115200);
+    if (! serial_port.good()) {
+        std::cerr << "Error: Could not set the baud rate." << std::endl ;
+        return -1;
+    }
+
+    // Set the number of data bits.
+    serial_port.SetCharSize(SerialStreamBuf::CHAR_SIZE_8);
+    if (!serial_port.good()) {
+        std::cerr << "Error: Could not set the character size." << std::endl ;
+        return -1;
+    }
+
+    // Disable parity.
+    serial_port.SetParity(SerialStreamBuf::PARITY_NONE);
+    if (!serial_port.good()) {
+        std::cerr << "Error: Could not disable the parity." << std::endl ;
+        return -1;
+    }
+
+    // Set the number of stop bits.
+    serial_port.SetNumOfStopBits(1);
+    if (!serial_port.good()) {
+        std::cerr << "Error: Could not set the number of stop bits." << std::endl ;
+        return -1;
+    }
+
+    // Turn on hardware flow control.
+    serial_port.SetFlowControl(SerialStreamBuf::FLOW_CONTROL_NONE);
+    if (!serial_port.good()) {
+        std::cerr << "Error: Could not use hardware flow control." << std::endl ;
+        return -1;
+    }
+
+    read_timeout = Glib::signal_timeout().connect(
+        sigc::mem_fun(*this, &SerialComm::read_from_serial),
+        40);
+
+    return 0;
+}
+
+
+// TODO une seule boucle for avec des appels dedans ?
+
+int SerialComm::send(string texte){
+    to_send = texte;
+
+    bool result = true;
+    if (to_UART)
+        result&=send_to_UART();
+    if (to_socket)
+        result&=send_to_socket();
+    if (to_fakeUART)
+        result&=send_to_fakeUART();
+    to_send.clear();
+    return result;
+}
+
+int SerialComm::send_to_UART(){
+    for(char& c : to_send)
+        serial_port.write(&c, 1);
+    char c = '\n';
+    serial_port.write(&c, 1);
+    return 0;
+}
+int SerialComm::send_to_socket(){
+    return 0;
 
 }
-void SerialComm::send_to_socket(){
-
-}
-void SerialComm::send_to_fakeUART(){
+int SerialComm::send_to_fakeUART(){
     for(char& c : to_send)
         append_to_UART(c);
     append_to_UART('\n');
-    to_send.clear();
+    return 0;
+}
+
+
+bool SerialComm::read_from_serial(){
+    while(serial_port.rdbuf()->in_avail() > 0) {
+        char next_byte;
+        serial_port.get(next_byte);
+        received +=     next_byte;
+        std::cout << next_byte;
+        usleep(10);
+    }
+    std::cout << std::flush;
+    if (received.size()>0) {
+        m_CommunicationView->receive_string(received);
+        received.clear();
+    }
+
+    return true;
 }

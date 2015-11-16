@@ -4,10 +4,14 @@
 #include <gtksourceviewmm.h>
 #include <mutex>
 
+// Ports Série
+#include "interfaces/communication.h"
+
 class CommunicationView {
 public:
     CommunicationView()
-    : sig_NewMessageUART(){};
+    : sig_NewMessageUART(),
+      communicator(this, &sig_NewMessageUART){};
 
    ~CommunicationView(){};
 
@@ -52,6 +56,8 @@ private:
     void onConnectPort();
     Gtk::ComboBoxText* serialPortsList;
 
+    // Communication
+    SerialComm communicator;
 };
 
 #endif
