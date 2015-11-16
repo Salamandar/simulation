@@ -62,8 +62,8 @@ void CommunicationView::clear_view() {
 
 void CommunicationView::print_UART_buffer() {
     bufferUART_mutex.lock();
-    if (bufferUART.back() != '\n')
-        bufferUART.append("\n");
+    //if (bufferUART.back() != '\n')
+    //    bufferUART.append("\n");
 
     m_sourceBuffer->insert(
         m_sourceBuffer->get_iter_at_offset(-1),
@@ -90,7 +90,7 @@ void CommunicationView::on_insert() {
         append_to_UART(c);
     append_to_UART('\n');
 
-    receive_string(texte);
+    receive_string(texte+'\n');
 }
 
 void CommunicationView::refreshSerialPorts() {
@@ -101,6 +101,7 @@ void CommunicationView::refreshSerialPorts() {
         serialPortsList->append(*it);
         it++;
     }
+    serialPortsList->set_active(0);
 }
 void CommunicationView::onConnectPort() {
 
