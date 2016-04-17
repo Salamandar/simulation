@@ -25,6 +25,7 @@ AsservissementWorker* m_AsservissementWorker = 0;
 CartographieWorker* m_CartographieWorker = 0;
 
 extern "C" {
+#ifdef SIMU_WITH_CARTO
     // Interfaçage avec le code C de la cartographie
     void dessine_obstacle_rond(int cx, int cy, int r){
         m_CartographieWorker->dessine_obstacle_rond(cx, cy, r);
@@ -35,6 +36,7 @@ extern "C" {
     void dessine_point_passage_carto(int x, int y, int type) {
         m_CartographieWorker->dessine_point_passage_carto(x, y, type);
     }
+#endif
     void UART_send_message(char *msg, unsigned int nb_char) {
         m_Simulation->m_communicationView.receive_string(msg);
     }

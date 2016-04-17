@@ -2,8 +2,6 @@ PROJECT=Simulation
 default: all
 # Default Options
 export ARCH   = PC
-export ROBOT ?= gros
-export SDL   ?= yes
 export DEBUG ?= _ALWAYS_
 
 PARENT_DIR = ../
@@ -11,15 +9,39 @@ PARENT_DIR = ../
 # Constantes de compilation
 EXEC=simulation
 
+SIMU_WITH_ASSER = 1
+SIMU_WITH_CARTO = 1
+
 include $(PARENT_DIR)/hardware/common.rules
 ################################################################################
 # Fichiers du projet
+SRC     = main.cpp		\
+		communication_view.cpp	\
+		plateau.cpp		\
+		simulation.cpp	\
+		interfaces/communication.cpp	\
+		$(shell find libserial -name "*.cpp")
 
-
+SRC_ASSER=interfaces/asservissement.cpp
+SRC_CARTO=interfaces/cartographie.cpp
 ################################################################################
 # Fichiers source
 
-SRC     = $(shell find . -name "*.cpp")
+ifeq ($(SIMU_WITH_ASSER), 1)
+	CFLAGS+=-DSIMU_WITH_ASSER
+	SRC+=$(SRC_ASSER)
+	LINK_LIBS +=  -lAsser  -lCommAsser
+	DEPS      += libAsser libCommAsser
+endif
+ifeq ($(SIMU_WITH_CARTO), 1)
+	CFLAGS+=-DSIMU_WITH_CARTO
+	SRC+=$(SRC_CARTO)
+	LINK_LIBS +=  -lCarto
+	DEPS      += libCarto
+endif
+
+
+#SRC     = $(shell find . -name "*.cpp")
 HDR     = $(shell find . -name "*.h")
 OBJ     = $(addprefix $(BUILD_DIR)/, $(SRC:%.cpp=%.o) )
 
@@ -32,9 +54,9 @@ LDFLAGS+=     `pkg-config gtkmm-3.0 gtksourceviewmm-3.0 --libs`
 # Cibles du projet
 all: $(BUILD_DIR)/$(EXEC)
 
-$(BUILD_DIR)/$(EXEC): $(OBJ) libAsser libHardware libCommAsser libCarto
+$(BUILD_DIR)/$(EXEC): $(OBJ) $(DEPS) libHardware
 	@echo "	++	$(PROJECT)|$(notdir $@)"
-	@$(++) $(CFLAGS) -o $@ $(OBJ) -lAsser -lCommAsser -lCarto -lHardware $(LDFLAGS)
+	$(++) $(CFLAGS) -o $@ $(OBJ) $(LINK_LIBS) -lHardware $(LDFLAGS)
 
 
 

@@ -44,7 +44,9 @@ int Simulation::start() {
     std::cout << "This is the UI thread !" << std::endl;
 
     m_AsservissementWorker->start();
+#ifdef SIMU_WITH_CARTO
     m_CartographieWorker  ->start();
+#endif
     Glib::signal_timeout().connect(
         sigc::mem_fun(*this, &Simulation::setRobotPositionFromAsservissement),
         40);
@@ -67,7 +69,10 @@ bool Simulation::on_plateau_click(GdkEventButton* event) {
     m_AsservissementWorker->y_newTrajectoire = y;
     m_AsservissementWorker->sig_AskNewTrajectoire.emit();
     plateau->cleanPassageCarto();
+#ifdef SIMU_WITH_CARTO
+    std::cout << "obs" << std::endl;
     m_CartographieWorker->new_pathfinding(x,y);
+#endif
     return true;
 }
 
