@@ -11,7 +11,7 @@ PARENT_DIR = ../
 # Constantes de compilation
 EXEC=simulation
 
-include $(PARENT_DIR)/hardware/common.mk
+include $(PARENT_DIR)/hardware/common.rules
 ################################################################################
 # Fichiers du projet
 
