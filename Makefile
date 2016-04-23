@@ -20,6 +20,7 @@ SRC     = main.cpp		\
 		plateau.cpp		\
 		simulation.cpp	\
 		interfaces/communication.cpp	\
+		interfaces/ForkAvecBus.cpp	\
 		$(shell find libserial -name "*.cpp")
 
 SRC_ASSER=interfaces/asservissement.cpp
