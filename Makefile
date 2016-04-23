@@ -30,8 +30,8 @@ SRC_CARTO=interfaces/cartographie.cpp
 ifeq ($(SIMU_WITH_ASSER), 1)
 	CFLAGS+=-DSIMU_WITH_ASSER
 	SRC+=$(SRC_ASSER)
-	LINK_LIBS +=  -lAsser  -lCommAsser
-	DEPS      += libAsser libCommAsser
+	LINK_LIBS +=  -lAsser
+	DEPS      += libAsser
 endif
 ifeq ($(SIMU_WITH_CARTO), 1)
 	CFLAGS+=-DSIMU_WITH_CARTO
@@ -54,9 +54,9 @@ LDFLAGS+=     `pkg-config gtkmm-3.0 gtksourceviewmm-3.0 --libs`
 # Cibles du projet
 all: $(BUILD_DIR)/$(EXEC)
 
-$(BUILD_DIR)/$(EXEC): $(OBJ) $(DEPS) libHardware
+$(BUILD_DIR)/$(EXEC): $(OBJ) $(DEPS) libComm libHardware
 	@echo "	++	$(PROJECT)|$(notdir $@)"
-	$(++) $(CFLAGS) -o $@ $(OBJ) $(LINK_LIBS) -lHardware $(LDFLAGS)
+	$(++) $(CFLAGS) -o $@ $(OBJ) $(LINK_LIBS) -lComm -lHardware $(LDFLAGS)
 
 
 

@@ -2,8 +2,7 @@
 #include "communication_view.h"
 
 // Autocomplétion
-#include "../common_code/communication/s2a.h"
-extern char *s2a_keys[S2A_SIZE];
+#include "../common_code/communication/keys.h"
 
 void CommunicationView::init(Glib::RefPtr<Gtk::Builder> builder) {
     Gtk::Button* button;
@@ -39,9 +38,9 @@ void CommunicationView::init(Glib::RefPtr<Gtk::Builder> builder) {
     completion->set_model(refCompletionModel);
 
     Gtk::TreeModel::Row row = *(refCompletionModel->append());
-    for (int i = 0; i <= S2A_FCT_MAX_INDEX; ++i) {
+    for (int i = 0; i < KEYS_SIZE; ++i) {
         row[m_Columns.m_col_id]   = i;
-        row[m_Columns.m_col_name] = s2a_keys[i];
+        row[m_Columns.m_col_name] = keys[i];
         row = *(refCompletionModel->append());
     }
     completion->set_text_column(m_Columns.m_col_name);

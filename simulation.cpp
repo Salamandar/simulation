@@ -70,7 +70,6 @@ bool Simulation::on_plateau_click(GdkEventButton* event) {
     m_AsservissementWorker->sig_AskNewTrajectoire.emit();
     plateau->cleanPassageCarto();
 #ifdef SIMU_WITH_CARTO
-    std::cout << "obs" << std::endl;
     m_CartographieWorker->new_pathfinding(x,y);
 #endif
     return true;

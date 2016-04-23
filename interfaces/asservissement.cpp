@@ -1,5 +1,7 @@
 #include <iostream>
 #include "asservissement.h"
+#include "../common_code/communication/keys.h"
+#include "../common_code/communication/emission.h"
 
 
 // Called to start the processing on the thread
@@ -36,6 +38,8 @@ void AsservissementWorker::runWork () {
     init_trajectoire();
     init_hardware();
     init_asser();
+
+    init_reception_communication();
 
     //lancement du robot
     //launch_tests();

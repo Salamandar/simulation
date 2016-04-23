@@ -7,6 +7,8 @@ void init_odometrie();
 void init_trajectoire();
 void init_hardware();
 void init_asser();
+void init_reception_communication();
+
 void start_asser();
 void set_trajectoire_xy_absolu(int x, int y);
 
@@ -43,6 +45,7 @@ public:
     int get_y();
     void asser_set_trajectoire_xy_absolu();
 
+    char SendBuffer[100];
 
     int theta_actuel,
         x_actuel,
