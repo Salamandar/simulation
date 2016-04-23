@@ -1,6 +1,7 @@
 #ifndef ASSERVISSEMENT_H
 #define ASSERVISSEMENT_H
 #include <gtkmm.h>
+#include "ForkAvecBus.hpp"
 
 extern "C" {
 void init_odometrie();
@@ -18,6 +19,8 @@ int   get_theta_actuel();
 
 }
 
+#define EXEC "../asservissement/build/PC/_DEBUG_/asser_robot"
+
 
 class Simulation;
 
@@ -26,7 +29,8 @@ public:
 
     AsservissementWorker()
     : sig_AskNewTrajectoire(),
-      thread(0)
+      thread(0),
+      AsserFork(EXEC)
     {}
 
     // Called to start the processing on the thread
@@ -46,6 +50,8 @@ public:
     void asser_set_trajectoire_xy_absolu();
 
     char SendBuffer[100];
+    ForkAvecBus AsserFork;
+
 
     int theta_actuel,
         x_actuel,

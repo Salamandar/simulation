@@ -59,6 +59,7 @@ int main() {
 
 
     m_Simulation->start();
+    delete m_AsservissementWorker;
 
     return 0;
 }

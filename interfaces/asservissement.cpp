@@ -6,7 +6,12 @@
 
 // Called to start the processing on the thread
 void AsservissementWorker::start() {
-    thread = Glib::Thread::create(sigc::mem_fun(*this, &AsservissementWorker::runWork), true);
+    //thread = Glib::Thread::create(sigc::mem_fun(*this, &AsservissementWorker::runWork), true);
+
+    sig_AskNewTrajectoire.connect(sigc::mem_fun(*this,
+        &AsservissementWorker::asser_set_trajectoire_xy_absolu));
+    AsserFork.start();
+    AsserFork.send("x=1000\ny=1000\nxy_absolu()\n");
 }
 
 AsservissementWorker::~AsservissementWorker() {
@@ -24,7 +29,12 @@ int AsservissementWorker::get_y(){
     return float_get_y_actuel();
 }
 void AsservissementWorker::asser_set_trajectoire_xy_absolu(){
-    set_trajectoire_xy_absolu(x_newTrajectoire, y_newTrajectoire);
+    send_val(SendBuffer, keys[VAL_X], x_newTrajectoire);
+    AsserFork.send(SendBuffer);
+    send_val(SendBuffer, keys[VAL_Y], y_newTrajectoire);
+    AsserFork.send(SendBuffer);
+    send_cmd(SendBuffer, keys[FCT_XY_ABSOLU]);
+    AsserFork.send(SendBuffer);
 }
 
 // This is where the real work happens
