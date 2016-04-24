@@ -40,4 +40,5 @@ void AsservissementWorker::runWork () {
 
     AsserFork.start();
 
+    AsserFork.readFromChild();
 }

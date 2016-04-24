@@ -18,6 +18,7 @@ public:
 
     bool start();
     void send(char* message);
+    void readFromChild();
 
 
 protected:

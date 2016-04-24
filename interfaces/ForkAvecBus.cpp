@@ -51,3 +51,26 @@ bool ForkAvecBus::start() {
 void ForkAvecBus::send(char* message) {
     write(child_stdin[WRITE], message, strlen(message));
 }
+
+void ForkAvecBus::readFromChild() {
+    FILE* fp = fdopen(child_stdout[READ], "r");
+    // Tests
+    int bytes_read = -1;
+    char readbuffer[1000];
+    while (1) {
+        //char c=getc(fp);
+        //std::cout << "From child: <<" << c << ">>" << std::endl;
+
+
+
+        bytes_read = read(child_stdout[READ], readbuffer, 999);
+        if (bytes_read <= 0)
+            break;
+        readbuffer[bytes_read] = '\0';
+        std::cout << "From child: <<" << readbuffer << ">>" << std::endl;
+
+
+
+        // receive_output += readbuffer;
+    }
+}
