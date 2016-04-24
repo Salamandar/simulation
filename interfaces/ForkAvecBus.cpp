@@ -29,10 +29,11 @@ bool ForkAvecBus::start() {
     if(child_pid == 0) {
         /* Child process closes up input side of pipe */
         close(child_stdin[WRITE]);
-        close(child_stdout[READ]);
-        dup2(child_stdin[READ], STDIN_FILENO);
-        //dup2(child_stdin[WRITE],STDOUT_FILENO);
+        dup2 (child_stdin[READ], STDIN_FILENO);
 
+        close(child_stdout[READ]);
+        dup2 (child_stdout[WRITE], STDOUT_FILENO);
+        close(child_stdout[WRITE]);
 
         execl("/bin/sh", "/bin/sh", "-c", ExecName.c_str(), NULL);
         exit(0);

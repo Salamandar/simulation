@@ -37,9 +37,6 @@ extern "C" {
         m_CartographieWorker->dessine_point_passage_carto(x, y, type);
     }
 #endif
-    void UART_send_message(char *msg, unsigned int nb_char) {
-        m_Simulation->m_communicationView.receive_string(msg);
-    }
 }
 
 int main() {

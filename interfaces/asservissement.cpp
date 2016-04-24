@@ -6,12 +6,7 @@
 
 // Called to start the processing on the thread
 void AsservissementWorker::start() {
-    //thread = Glib::Thread::create(sigc::mem_fun(*this, &AsservissementWorker::runWork), true);
-
-    sig_AskNewTrajectoire.connect(sigc::mem_fun(*this,
-        &AsservissementWorker::asser_set_trajectoire_xy_absolu));
-    AsserFork.start();
-    AsserFork.send("x=1000\ny=1000\nxy_absolu()\n");
+    thread = Glib::Thread::create(sigc::mem_fun(*this, &AsservissementWorker::runWork), true);
 }
 
 AsservissementWorker::~AsservissementWorker() {
@@ -43,15 +38,6 @@ void AsservissementWorker::runWork () {
     sig_AskNewTrajectoire.connect(sigc::mem_fun(*this,
         &AsservissementWorker::asser_set_trajectoire_xy_absolu));
 
-    //init
-    init_odometrie();
-    init_trajectoire();
-    init_hardware();
-    init_asser();
+    AsserFork.start();
 
-    init_reception_communication();
-
-    //lancement du robot
-    //launch_tests();
-    start_asser();
 }
